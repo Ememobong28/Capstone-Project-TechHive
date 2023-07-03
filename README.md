@@ -4,23 +4,33 @@
 
 TechHive is a specialized website for college students in the tech field, offering a streamlined platform to search for internships, discover conferences, and access programs for enhancing their experiences. It aims to solve the problems of overwhelming internship searches by categorizing opportunities based on academic year and providing a supportive community through integration with ColorStack. By connecting students with peers who have completed relevant internships, TechHive empowers them to make informed decisions and pursue successful tech careers.
 
+**User Roles**
+Student: A college student in the tech field who is actively seeking internship opportunities to gain practical experience and enhance their career prospects.
+
+**User Personas**
+Student Persona 1:
+**Name:** Emily
+**Location:** San Francisco, USA
+**Age:** 19
+**Technology Access:** Proficient with laptops and frequently uses the website for internship searches.
+**Motivation:** Emily is a sophomore computer science student looking for a summer internship related to software development. She wants to find internships specifically tailored to her academic year and gather insights from other students who have completed internships in the tech field.
+
+
+Student Persona 2:
+**Name:** Alex
+**Location:** New York City, USA
+**Age:** 21
+**Technology Access:** Comfortable with smartphones and uses the mobile app to access internship information on the go.
+**Motivation:** Alex is a senior computer engineering student searching for a final-year internship that aligns with his interests in hardware design. He wants to explore internship opportunities and benefit from the advice and experiences of other students who have completed internships.
+
+
 **User Stories**
-
-**User Persona:**
-1.) Name: Alex
-
-2.) Age: 20
-
-3.) Background: International college student pursuing a degree in Tech
-
-4.) Characteristics: Enthusiastic, driven, tech-savvy
-
-5.) Goal: Find internship opportunities, programs, and conferences specifically catered to college students in the tech field
-
-**User Story:**
-
-
-As a college student passionate about technology, Alex wants to take full advantage of the opportunities available to enhance their career prospects. With TechHive, Alex immerses themselves in a vibrant ecosystem designed exclusively for college students in the tech field. They embark on an exciting journey of exploration, discovering internship opportunities, programs, and conferences tailored to their educational background and career aspirations. Alex effortlessly navigates through the user-friendly interface, effortlessly filtering and exploring the diverse range of opportunities available. TechHive becomes their trusted companion, providing them with valuable insights, resources, and connections to thrive in the dynamic tech industry. By actively engaging with the TechHive community, Alex builds meaningful relationships with like-minded peers, forming collaborations and expanding their professional network. With TechHive as their guide, Alex embraces a world of endless possibilities, unlocking their true potential as a tech-savvy college student. Join Alex and the thriving community at TechHive, where the future of tech awaits.
+As a student, I want to create a profile, so that I can showcase my skills and academic year to potential employers.
+As a student, I want to search for internships based on my academic year, so that I can find opportunities that match my current level of study.
+As a student, I want to view internship details, including company information and application instructions, so that I can make informed decisions about applying.
+As a student, I want to connect with other students who have completed internships, so that I can ask questions, seek advice, and learn from their experiences.
+As a student, I want to explore conferences I can attend to grow my network in the tech industry.
+As a student, I want to discover programs I can take part in to learn more about tech companies and also develop my skills
 
 **Wireframe**
 
