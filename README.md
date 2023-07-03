@@ -2,8 +2,7 @@
 
 **Description**
 
-TechHive: Unleash your tech career potential! Discover tailored internships, programs, conferences, and a supportive community. Personalized recommendations, curated resources, and networking opportunities await. Join Gen Z's vibrant hub for tech success!
-
+TechHive is a specialized website for college students in the tech field, offering a streamlined platform to search for internships, discover conferences, and access programs for enhancing their experiences. It aims to solve the problems of overwhelming internship searches by categorizing opportunities based on academic year and providing a supportive community through integration with ColorStack. By connecting students with peers who have completed relevant internships, TechHive empowers them to make informed decisions and pursue successful tech careers.
 
 **User Stories**
 
@@ -22,4 +21,6 @@ TechHive: Unleash your tech career potential! Discover tailored internships, pro
 
 
 As a college student passionate about technology, Alex wants to take full advantage of the opportunities available to enhance their career prospects. With TechHive, Alex immerses themselves in a vibrant ecosystem designed exclusively for college students in the tech field. They embark on an exciting journey of exploration, discovering internship opportunities, programs, and conferences tailored to their educational background and career aspirations. Alex effortlessly navigates through the user-friendly interface, effortlessly filtering and exploring the diverse range of opportunities available. TechHive becomes their trusted companion, providing them with valuable insights, resources, and connections to thrive in the dynamic tech industry. By actively engaging with the TechHive community, Alex builds meaningful relationships with like-minded peers, forming collaborations and expanding their professional network. With TechHive as their guide, Alex embraces a world of endless possibilities, unlocking their true potential as a tech-savvy college student. Join Alex and the thriving community at TechHive, where the future of tech awaits.
+
+
 
