@@ -1,0 +1,152 @@
+[
+    {
+    "title": "Traveling to Paris",
+    "content": "I just arrived in Paris and the city is beautiful! The Eiffel Tower is breathtaking.",
+    "userId": 1
+    },
+    {
+    "title": "My Favorite Recipe",
+    "content": "I want to share my favorite recipe for chocolate chip cookies. They are delicious and easy to make!",
+    "userId": 2
+    },
+    {
+    "title": "Movie Recommendation",
+    "content": "I watched a great movie last night called 'Inception'. The plot was mind-blowing!",
+    "userId": 3
+    },
+    {
+    "title": "Hiking Adventure",
+    "content": "I went on a challenging hike in the mountains today. The views were absolutely stunning!",
+    "userId": 4
+    },
+    {
+    "title": "Book Review: 'The Great Gatsby'",
+    "content": "I recently finished reading 'The Great Gatsby' and it's now one of my all-time favorite books.",
+    "userId": 5
+    },
+    {
+    "title": "Music Concert Experience",
+    "content": "I attended a music concert last night and it was an incredible experience. The energy was electrifying!",
+    "userId": 6
+    },
+    {
+    "title": "Delicious Pizza Place",
+    "content": "I discovered a hidden gem for pizza lovers. The pizza at 'Pizzeria Italia' is simply mouthwatering.",
+    "userId": 7
+    },
+    {
+    "title": "Fitness Journey",
+    "content": "I've been on a fitness journey for the past few months and I'm proud of my progress. Consistency is key!",
+    "userId": 8
+    },
+    {
+    "title": "Exploring New York City",
+    "content": "I spent the weekend exploring New York City. Times Square was vibrant and Central Park was serene.",
+    "userId": 9
+    },
+    {
+    "title": "Gourmet Cooking Class",
+    "content": "Yesterday, I attended a gourmet cooking class and learned how to prepare a five-coursemeal. The flavors were exquisite!",
+    "userId": 10
+    },
+    {
+    "title": "Best Beaches in Hawaii",
+    "content": "I recently visited Hawaii and discovered some of the most stunning beaches. The crystal-clear waters were amazing!",
+    "userId": 1
+    },
+    {
+    "title": "Photography Tips",
+    "content": "As an avid photographer, I wanted to share some tips for capturing beautiful landscapes. Lighting plays a crucial role!",
+    "userId": 2
+    },
+    {
+    "title": "Favorite TV Show",
+    "content": "I've been binge-watching 'Game of Thrones' and I can't get enough of the thrilling storyline and complex characters.",
+    "userId": 3
+    },
+    {
+    "title": "Mountain Biking Adventure",
+    "content": "I went on an adrenaline-pumping mountain biking adventure and conquered some challenging trails. What a rush!",
+    "userId": 4
+    },
+    {
+    "title": "Book Recommendation: 'To Kill a Mockingbird'",
+    "content": "If you're looking for a thought-provoking and powerful read, I highly recommend 'To Kill a Mockingbird'.",
+    "userId": 5
+    },
+    {
+    "title": "Art Exhibition",
+    "content": "I attended an art exhibition featuring breathtaking paintings and sculptures. The creativity was awe-inspiring.",
+    "userId": 6
+    },
+    {
+    "title": "Hidden Coffee Shop",
+    "content": "I stumbled upon a cozy little coffee shop tucked away in a quiet alley. Their espresso is perfection!",
+    "userId": 7
+    },
+    {
+    "title": "Yoga and Mindfulness",
+    "content": "Practicing yoga and mindfulness has had a profound impact on my well-being. It's a journey of self-discovery.",
+    "userId": 8
+    },
+    {
+    "title": "Road Trip to Grand Canyon",
+    "content": "I embarked on an epic road trip to the Grand Canyon. Witnessing its vastness was an awe-inspiring moment.",
+    "userId": 9
+    },
+    {
+    "title": "Authentic Thai Cooking",
+    "content": "I attended a Thai cooking workshop and learned to prepare traditional dishes bursting with flavors. Simply amazing!",
+    "userId": 10
+    },
+    {
+    "title": "Tips for Solo Travelers",
+    "content": "For those planning solo trips, here are some tips to make the most of your adventures and embrace independence.",
+    "userId": 1
+    },
+    {
+    "title": "Home Gardening",
+    "content": "I've taken up home gardening as a hobby. Watching plants grow and flourish brings a sense of fulfillment.",
+    "userId": 2
+    },
+    {
+    "title": "Sci-Fi Book Recommendation",
+    "content": "If you're a fan of science fiction, you must read 'Dune'. It's a captivating epic that will transport you to another world.",
+    "userId": 3
+    },
+    {
+    "title": "Skydiving Experience",
+    "content": "I finally crossed skydiving off my bucket list. The feeling of freefalling was exhilarating and unforgettable!",
+    "userId": 4
+    },
+    {
+    "title": "Exploring Historical Sites",
+    "content": "I love exploring historical sites and learning about the rich stories behind them. History comes alive!",
+    "userId": 5
+    },
+    {
+    "title": "DIY Home Decor",
+    "content": "I've been working on DIY home decor projects andtransforming my living space. It's amazing how a few creative touches can make a big difference!",
+    "userId": 6
+    },
+    {
+    "title": "Culinary Adventures in Italy",
+    "content": "During my trip to Italy, I indulged in the finest Italian cuisine. The pasta and gelato were beyond delicious!",
+    "userId": 7
+    },
+    {
+    "title": "Meditation and Stress Relief",
+    "content": "In today's fast-paced world, meditation has become my go-to practice for finding inner calm and reducing stress.",
+    "userId": 8
+    },
+    {
+    "title": "Exploring Ancient Ruins",
+    "content": "Visiting ancient ruins is like stepping back in time. The architectural marvels leave me in awe of human history.",
+    "userId": 9
+    },
+    {
+    "title": "Photography: Capturing Portraits",
+    "content": "Capturing portraits is both challenging and rewarding. I love bringing out the essence and emotions of individuals.",
+    "userId": 10
+    }
+    ]

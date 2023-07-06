@@ -1,0 +1,28 @@
+
+[
+    {
+      "title": "UberSTAR Internship Program 2024",
+      "picture": "/Uber.jpg",
+      "link": "https://www.uber.com/us/en/careers/uberstar/",
+      "description": "UberSTAR is a paid internship program providing opportunities for populations traditionally underrepresented in tech. Open to undergraduate first and second year students (freshman and rising sophomores) from Community Colleges and Universities, UberSTAR connects students interested in working in tech with full-time internships at Uber and enables participants with real-work skills, experience, and professional network to succeed.",
+      "company": "Uber",
+      "category": "Freshman Friendly, Rising - Sophomore Friendly"
+    },
+    {
+      "title": "Microsoft Explore Internship Program",
+      "picture": "/Microsoft-Logo.jpeg",
+      "link": "https://careers.microsoft.com/v2/global/en/exploremicrosoft",
+      "description": "Explore Microsoft is a 12-week summer internship program specifically designed for first and second-year college students. The program is rotational and allows you to gain experience in our different software engineering roles. It's also designed to give you hands-on experience with various tools and programming languages in the field of software development, and encourage you to pursue degrees in computer science, computer engineering, or related technical disciplines. Your on-the-job learning will be augmented with mentoring, community building and networking opportunities.",
+      "company": "Microsoft",
+      "category": "Freshman Friendly, Sophomore Friendly"
+    },
+    {
+      "title": "Product Design Intern Apple",
+      "picture": "https://example.com/images/internship3.jpg",
+      "link": "https://example.com/internship3",
+      "description": "Work on data analysis and machine learning projects under the guidance of experienced data scientists.",
+      "company": "Apply",
+      "category": "Junior friendly, Senior friendly"
+    }
+  ]
+  
