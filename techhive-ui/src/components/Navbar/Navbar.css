@@ -1,0 +1,28 @@
+.navbar {
+    background-color: peachpuff;
+    height: 65px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    color: #fff;
+    z-index: 2;
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    margin-right: 20px; /* Increase the margin for better spacing */
+  }
+  
+  .nav-links li {
+    margin-right: 15px;
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    /* Add additional styling as needed */
+  }
+  

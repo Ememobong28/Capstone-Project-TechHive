@@ -1,0 +1,13 @@
+.logo-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo-image {
+    position: sticky;
+    width: 175px; 
+    height: 175px;
+    margin-top: 10px;
+    
+    /* Add additional styling as needed */
+  }
