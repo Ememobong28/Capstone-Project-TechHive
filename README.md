@@ -33,7 +33,7 @@ Student Persona 1:
 Student Persona 2:
 
 
-**Name:** Alex
+**Name:** Nicole
 
 
 **Location:** New York City, USA
@@ -45,7 +45,7 @@ Student Persona 2:
 **Technology Access:** Comfortable with smartphones and uses the mobile app to access internship information on the go.
 
 
-**Motivation:** Alex is a senior computer engineering student searching for a final-year internship that aligns with his interests in hardware design. He wants to explore internship opportunities and benefit from the advice and experiences of other students who have completed internships.
+**Motivation:** Nicole is a senior computer engineering student searching for a final-year internship that aligns with her interests in hardware design. She wants to explore internship opportunities and benefit from the advice and experiences of other students who have completed internships.
 
 
 **User Stories**
