@@ -1,5 +1,3 @@
-// app.js
-// app.js
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
@@ -9,7 +7,7 @@ import { User, Post, Internship } from './models/index.js';
 const app = express();
 
 app.use(cors())
-app.use(express.json()); // Middleware for parsing JSON bodies from HTTP requests
+app.use(express.json());s
 app.use(morgan())
 
 // Route to get all users

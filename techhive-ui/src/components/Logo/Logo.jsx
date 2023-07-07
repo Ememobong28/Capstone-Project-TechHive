@@ -1,16 +1,14 @@
 import React from 'react';
-// import logoImage from '../assets/Logo.png';
+import { Link } from 'react-router-dom';
 import './Logo.css';
 
 function Logo() {
   return (
     <div className="logo-container">
-      <img src="/Logo.png" alt="Techhive Logo" className="logo-image" />
+      <Link to="/">
+        <img src="/Logo.png" alt="Techhive Logo" className="logo-image" />
+      </Link>
     </div>
   );
 }
-
 export default Logo;
-
-
-  

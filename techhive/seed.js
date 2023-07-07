@@ -17,7 +17,7 @@ const seedDatabase = async () => {
     // Sync all models that aren't already in the database
     await sequelize.sync({ alter: true });
 
-    // Then seed the User and Post data
+    // Then seed the User, Post, and Internship data
     await User.bulkCreate(userData);
     console.log('User data has been seeded!');
 

@@ -9,7 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: -15px;/* Add gap between the animation and text */
+  gap: -15px;
 }
 
 .animation-container {
@@ -19,7 +19,6 @@
 .animation-image {
   width: 500px;
   height: 500px;
-  /* Add additional styling for the image */
 }
 
 .text-container {
@@ -27,14 +26,14 @@
 }
 
 .text-container h1 {
-  font-size: 48px; /* Increase the font size */
+  font-size: 48px; 
   margin-bottom: 20px;
-  color: #333; /* Change the text color */
-  font-family: montserrat; /* Apply a different font family */
+  color: #333; 
+  font-family: montserrat; 
 }
 
 .text-container p {
-  font-size: 24px; /* Increase the font size */
-  color: #555; /* Change the text color */
-  font-family: montserrat; /* Apply a different font family */
+  font-size: 24px; 
+  color: #555; 
+  font-family: montserrat; 
 }

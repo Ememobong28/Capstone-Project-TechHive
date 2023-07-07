@@ -17,12 +17,12 @@
       "category": "Freshman Friendly, Sophomore Friendly"
     },
     {
-      "title": "Product Design Intern Apple",
-      "picture": "https://jobs.apple.com/",
-      "link": "/Apple-Logo.jpg",
-      "description": "Work on data analysis and machine learning projects under the guidance of experienced data scientists.",
-      "company": "Apple",
-      "category": "Junior friendly, Senior friendly"
+      "title": "Microsoft Product Design Internship",
+      "picture": "/Microsoft-Logo.jpeg",
+      "link": "https://careers.microsoft.com/v2/global/en/productdesign",
+      "description": "The Microsoft Product Design Internship offers an exciting opportunity for aspiring product designers to work on innovative projects. As an intern, you will collaborate with experienced designers, participate in design sprints, and contribute to the creation of user-centered designs. This internship is open to undergraduate and graduate students with a passion for user experience and product design. Join Microsoft and be part of a team that is shaping the future of technology through thoughtful and impactful design.",
+      "company": "Microsoft",
+      "category": "Junior Friendly, Senior Friendly"
     },
     {
       "title": "Google Engineering Practicum Internship",

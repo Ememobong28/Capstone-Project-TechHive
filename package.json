@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "react-router-dom": "^6.14.1",
     "react-slick": "^0.29.0",
     "slick": "^1.12.2",
     "slick-carousel": "^1.8.1"
