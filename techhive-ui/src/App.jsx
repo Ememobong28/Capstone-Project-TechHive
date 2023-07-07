@@ -1,16 +1,22 @@
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar.jsx';
 import WelcomeSection from './components/WelcomeSection/WelcomeSection.jsx';
-import WhatWeOffer from './components/WhatWeOffer/WhatWeOffer.jsx'
+import WhatWeOffer from './components/WhatWeOffer/WhatWeOffer.jsx';
+import Internships from './components/Internships/Internships.jsx';
+import './App.css';
 
 function App() {
   return (
-    <div>
-      <Navbar />
-      <WelcomeSection />
-      <WhatWeOffer />
-      {/* Other content of your app */}
-    </div>
+    <Router>
+      <div>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<div><WelcomeSection /><WhatWeOffer /></div>} />
+          <Route path="/internships" element={<Internships />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
