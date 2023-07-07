@@ -1,0 +1,40 @@
+.welcome-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px;
+}
+
+.content-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: -15px;/* Add gap between the animation and text */
+}
+
+.animation-container {
+  animation: fade-in 1s ease-in-out;
+}
+
+.animation-image {
+  width: 500px;
+  height: 500px;
+  /* Add additional styling for the image */
+}
+
+.text-container {
+  text-align: center;
+}
+
+.text-container h1 {
+  font-size: 48px; /* Increase the font size */
+  margin-bottom: 20px;
+  color: #333; /* Change the text color */
+  font-family: montserrat; /* Apply a different font family */
+}
+
+.text-container p {
+  font-size: 24px; /* Increase the font size */
+  color: #555; /* Change the text color */
+  font-family: montserrat; /* Apply a different font family */
+}

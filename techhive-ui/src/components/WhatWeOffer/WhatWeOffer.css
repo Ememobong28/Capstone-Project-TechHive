@@ -1,0 +1,67 @@
+.offer-card .slick-slider {
+    margin: 0 auto;
+  }
+  
+  .offer-card .slick-slide {
+    text-align: center;
+  }
+  
+  .what-we-offer-section {
+    text-align: center;
+    padding: 2rem;
+    font-family: montserrat;
+  }
+  
+  .section-heading {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    font-family: montserrat;
+  }
+  
+  .offer-card {
+    margin-bottom: 2rem;
+  }
+  
+  .offer-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: -20%;
+    margin-top: 50px;
+  }
+  
+  .offer-image {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    margin-right: 2rem;
+    border-radius: 20%;
+    border: 4px solid #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+  
+  .offer-text {
+    text-align: left;
+  }
+  
+  .offer-text h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #333;
+    text-transform: uppercase;
+  }
+  
+  .offer-text p {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.5;
+  }
+  
+  .offer-card:nth-child(odd) .offer-content {
+    flex-direction: row-reverse;
+  }
+  
+  .offer-card:nth-child(odd) .offer-text {
+    text-align: left;
+  }
+ 

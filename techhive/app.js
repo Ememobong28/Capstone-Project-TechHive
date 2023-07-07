@@ -51,12 +51,15 @@ app.get('/posts', async (req, res) => {
 
 app.get('/internships', async (req, res) => {
   try {
-    const internships = await Internship.findAll();
+    const data = fs.readFileSync(path.resolve(__dirname, './internships.json'), 'utf8');
+    const { internships } = JSON.parse(data);
+    console.log(internships); 
     res.json(internships);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
+
 
 app.get('/internships/:id', async (req, res) => {
   try {

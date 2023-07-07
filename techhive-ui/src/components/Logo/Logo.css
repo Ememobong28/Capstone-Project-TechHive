@@ -5,9 +5,9 @@
   
   .logo-image {
     position: sticky;
-    width: 175px; 
-    height: 175px;
-    margin-top: 10px;
+    width: 110px; 
+    height: 100px;
+    object-fit: contain;
     
     /* Add additional styling as needed */
   }

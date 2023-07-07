@@ -1,5 +1,5 @@
-
-[
+{
+  "internships": [
     {
       "title": "UberSTAR Internship Program 2024",
       "picture": "/Uber.jpg",
@@ -18,11 +18,69 @@
     },
     {
       "title": "Product Design Intern Apple",
-      "picture": "https://example.com/images/internship3.jpg",
-      "link": "https://example.com/internship3",
+      "picture": "https://jobs.apple.com/",
+      "link": "/Apple-Logo.jpg",
       "description": "Work on data analysis and machine learning projects under the guidance of experienced data scientists.",
-      "company": "Apply",
+      "company": "Apple",
       "category": "Junior friendly, Senior friendly"
-    }
+    },
+    {
+      "title": "Google Engineering Practicum Internship",
+      "picture": "/Google-Logo.jpg",
+      "link": "https://careers.google.com/students/",
+      "description": "The Google Engineering Practicum Internship is a summer program designed for first and second-year undergraduate students with a passion for computer science. As an Engineering Practicum intern, you will have the opportunity to work on real engineering projects, collaborate with experienced engineers, and gain valuable hands-on experience in software development. Join Google and be part of a team that is shaping the future of technology.",
+      "company": "Google",
+      "category": "Freshman Friendly, Sophomore Friendly"
+      },
+      {
+        "title": "Meta University Engineering Internship",
+        "picture": "/Facebook-Logo.jpg",
+        "link": "https://www.facebook.com/careers/students-and-grads/students",
+        "description": "The Meta University Engineering Internship is a paid summer internship program that offers hands-on experience in software engineering at Facebook. Open to undergraduate students, this internship provides an opportunity to work on impactful projects, collaborate with talented engineers, and learn from industry leaders. Join Meta University and gain the skills and knowledge to make a difference in the world of technology.",
+        "company": "Meta",
+        "category": "Freshman Friendly, Sophomore Friendly"
+      },
+      {
+        "title": "Amazon Software Development Engineer Internship",
+        "picture": "/Amazon-Logo.jpg",
+        "link": "https://www.amazon.jobs/en/teams/internships-for-students",
+        "description": "The Amazon Software Development Engineer Internship offers a challenging and rewarding experience for undergraduate students interested in software development. As an intern, you will work on projects that have a direct impact on Amazon's customers, collaborate with talented engineers, and learn from experienced mentors. Join Amazon and be part of a team that is revolutionizing e-commerce and technology.",
+        "company": "Amazon",
+        "category": "Sophomore Friendly, Junior Friendly"
+      },
+      {
+        "title": "IBM Extreme Blue Internship",
+        "picture": "/IBM-Logo.jpg",
+        "link": "https://www.ibm.com/employment/extremeblue/",
+        "description": "The IBM Extreme Blue Internship is a highly competitive program that offers an immersive and hands-on experience in solving real-world business challenges using cutting-edge technologies. Open to undergraduate students, this internship provides an opportunity to work in cross-functional teams, collaborate with industry experts, and develop innovative solutions. Join IBM Extreme Blue and unleash your potential in the world of technology and business.",
+        "company": "IBM",
+        "category": "Junior Friendly, Senior Friendly"
+      },
+      {
+        "title": "Intel Summer Internship Program",
+        "picture": "/Intel-Logo.jpg",
+        "link": "https://www.intel.com/content/www/us/en/jobs/students.html",
+        "description": "The Intel Summer Internship Program offers an exciting opportunity for undergraduate students to gain hands-on experience in various technical roles within Intel. As an intern, you will work on impactful projects, collaborate with talented engineers, and contribute to cutting-edge technologies. Join Intel and be part of a team that is driving innovation and shaping the future of technology.",
+        "company": "Intel",
+        "category": "Sophomore Friendly, Junior Friendly"
+      },
+      {
+        "title": "Salesforce Futureforce Internship",
+        "picture": "/Salesforce-Logo.jpg",
+        "link": "https://www.salesforce.com/company/careers/university-recruiting/",
+        "description": "The Salesforce Futureforce Internship program offers undergraduate students the opportunity to gain practical experience in various roles across the company. As an intern, you will work on challenging projects, collaborate with talented professionals, and learn about the Salesforce ecosystem. Join Salesforce and be part of a company that is revolutionizing the world of customer relationship management and cloud computing.",
+        "company": "Salesforce",
+        "category": "Freshman Friendly, Sophomore Friendly"
+      },
+      {
+        "title": "Meta Software Engineering Internship",
+        "picture": "/Facebook-Logo.jpg",
+        "link": "https://www.facebook.com/careers/students-and-grads/students",
+        "description": "The Meta Software Engineering Internship provides junior and senior undergraduate students the opportunity to work on cutting-edge projects and make a real impact. As an intern, you will collaborate with top engineers, tackle complex technical challenges, and contribute to building products that are used by billions of people worldwide. Join Facebook and be part of a company that is connecting the world and driving innovation.",
+        "company": "Meta",
+        "category": "Junior Friendly, Senior Friendly"
+        }
   ]
+
+}
   

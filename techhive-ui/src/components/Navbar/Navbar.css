@@ -1,28 +1,36 @@
 .navbar {
-    background-color: peachpuff;
-    height: 65px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 20px;
-    color: #fff;
-    z-index: 2;
-  }
-  
-  .nav-links {
-    list-style: none;
-    display: flex;
-    margin-right: 20px; /* Increase the margin for better spacing */
-  }
-  
-  .nav-links li {
-    margin-right: 15px;
-  }
-  
-  .nav-links a {
-    text-decoration: none;
-    color: #333;
-    font-weight: bold;
-    /* Add additional styling as needed */
-  }
-  
+  /* background-color:look for one!! */ 
+  height: 65px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  color: #333;
+  /* Update the color to ensure better readability */
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20%;
+  margin-right: 65%;
+}
+
+.nav-links li {
+  margin-right: 10px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  font-size: 16px; /* Change the font size */
+  font-family: montserrat; /* Apply a different font type */
+  /* Add additional styling as needed */
+  transition: color 0.3s ease; /* Add transition effect for smoother hover */
+}
+
+.nav-links a:hover {
+  color: #ff6f00; /* Change the color on hover to a more engaging or modern color */
+  /* Add additional styling for the hover effect */
+}
