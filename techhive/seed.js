@@ -24,7 +24,7 @@ const seedDatabase = async () => {
     await Post.bulkCreate(postData);
     console.log('Post data has been seeded!');
 
-    await Internship.bulkCreate(internshipData);
+    await Internship.bulkCreate(internshipData.internships);
     console.log('Internship data has been seeded!');
 
   } catch (error) {

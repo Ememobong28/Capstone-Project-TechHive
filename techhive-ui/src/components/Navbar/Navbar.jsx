@@ -8,8 +8,12 @@ function Navbar() {
       <Logo />
       <ul className="nav-links">
         <li><a href="#">Home</a></li>
+        <li><a href="#">Internships</a></li>
+        <li><a href="#">Conferences</a></li>
+        <li><a href="#">Programs</a></li>
         <li><a href="#">About</a></li>
-        <li><a href="#">Services</a></li>
+
+
         {/* Add more navigation links as needed */}
       </ul>
     </nav>
