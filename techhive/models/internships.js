@@ -28,7 +28,7 @@ export const Internship = sequelize.define('Internship', {
     allowNull: false
   },
   category: {
-    type: DataTypes.TEXT,
+    type: DataTypes.ARRAY(DataTypes.STRING),
     allowNull: false
   },
 });

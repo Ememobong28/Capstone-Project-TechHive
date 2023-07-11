@@ -13,6 +13,8 @@ function Navbar() {
         <li><Link to="/conferences">Conferences</Link></li>
         <li><Link to="/programs">Programs</Link></li>
         <li><Link to="/about">About</Link></li>
+        <li><Link to="/login">Login</Link></li>
+        <li><Link to="/signup">SignUp</Link></li>
       </ul>
     </nav>
   );
