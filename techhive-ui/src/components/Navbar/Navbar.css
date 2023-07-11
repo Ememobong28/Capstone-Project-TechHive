@@ -31,3 +31,10 @@
 .nav-links a:hover {
   color: #ff6f00; 
 }
+
+.signup-login {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  margin-left: 10px;
+}

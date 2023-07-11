@@ -4,6 +4,8 @@ import Navbar from './components/Navbar/Navbar.jsx';
 import WelcomeSection from './components/WelcomeSection/WelcomeSection.jsx';
 import WhatWeOffer from './components/WhatWeOffer/WhatWeOffer.jsx';
 import Internships from './components/Internships/Internships.jsx';
+import Login from './components/Login/Login.jsx';
+import SignUp from './components/Signup/Signup.jsx';
 import './App.css';
 
 function App() {
@@ -14,6 +16,8 @@ function App() {
         <Routes>
           <Route path="/" element={<div><WelcomeSection /><WhatWeOffer /></div>} />
           <Route path="/internships" element={<Internships />} />
+          <Route path="/login" element ={<Login />} />
+          <Route path="/signup" element ={<SignUp />} />
         </Routes>
       </div>
     </Router>
