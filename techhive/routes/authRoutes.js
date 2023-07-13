@@ -8,7 +8,7 @@ const router = express.Router();
 // Route for user signup
 router.post('/signup', async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, accountType, industry } = req.body;
 
     // Check if the email already exists in the database
     const existingUser = await User.findOne({ where: { email } });
@@ -20,7 +20,13 @@ router.post('/signup', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new user
-    const newUser = await User.create({ username, email, password: hashedPassword });
+    const newUser = await User.create({ username, email, password: hashedPassword, accountType });
+
+    // If the account type is 'company', store the industry
+    if (accountType === 'company') {
+      newUser.industry = industry;
+      await newUser.save();
+    }
 
     // Generate a JWT token
     const token = jwt.sign({ userId: newUser.id }, 'your-secret-key');

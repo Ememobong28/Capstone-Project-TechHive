@@ -14,5 +14,13 @@ export const User = sequelize.define('User', {
   password: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  accountType: {
+    type: DataTypes.ENUM('company', 'student'),
+    allowNull: false
+  },
+  industry: {
+    type: DataTypes.STRING,
+    allowNull: true
   }
 });

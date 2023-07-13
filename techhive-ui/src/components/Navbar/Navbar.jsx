@@ -16,11 +16,10 @@ function Navbar() {
     <nav className="navbar">
       <Logo />
       <ul className="nav-links">
-        <li><Link to="/">Home</Link></li>
+        <li><Link to="/">Welcome</Link></li>
         <li><Link to="/internships">Internships</Link></li>
         <li><Link to="/conferences">Conferences</Link></li>
         <li><Link to="/programs">Programs</Link></li>
-        <li><Link to="/about">About</Link></li>
         {user ? (
           <li onClick={handleLogout}>
             <Link to="/">Logout</Link>
