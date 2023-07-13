@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; 
+import Confetti from 'react-confetti';
+import './SignUp.css'
+
 
 const styles = {
   form: {
@@ -37,8 +40,10 @@ const styles = {
 function SignUp() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [showConfetti, setShowConfetti] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState('');
+  
 
   const navigate = useNavigate(); 
 
@@ -50,14 +55,20 @@ function SignUp() {
     }
     try {
       const response = await axios.post("http://localhost:3000/auth/signup", { username, email, password });
-      console.log(response.data);
-      navigate('/'); 
+      setShowConfetti(true);
+      setTimeout(() => {
+        setShowConfetti(false);
+
+        navigate('/login'); 
+      }, 3000)
+      
     } catch (err) {
       console.error(err.response.data);
     }
   };
 
   return (
+    <div className='signup'>
     <form onSubmit={handleSubmit} style={styles.form}>
       <input type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="Username" required style={styles.input} />
       <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" required style={styles.input} />
@@ -65,6 +76,8 @@ function SignUp() {
       <input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} placeholder="Confirm Password" required style={styles.input} />
       <button type="submit" style={styles.button}>Sign Up</button>
     </form>
+    {showConfetti && <Confetti />}
+    </div>
   );
 }
 

@@ -7,9 +7,11 @@ import Internships from './components/Internships/Internships.jsx';
 import Login from './components/Login/Login.jsx';
 import SignUp from './components/Signup/Signup.jsx';
 import './App.css';
+import { UserProvider } from './UserContext.jsx';
 
 function App() {
   return (
+    <UserProvider>
     <Router>
       <div>
         <Navbar />
@@ -21,6 +23,7 @@ function App() {
         </Routes>
       </div>
     </Router>
+    </UserProvider>
   );
 }
 
