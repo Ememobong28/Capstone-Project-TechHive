@@ -8,6 +8,7 @@ import Login from './components/Login/Login.jsx';
 import SignUp from './components/Signup/Signup.jsx';
 import './App.css';
 import { UserProvider } from './UserContext.jsx';
+import NewInternship from './components/NewInternship/NewInternship.jsx';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/internships" element={<Internships />} />
             <Route path="/login" element ={<Login />} />
             <Route path="/signup" element ={<SignUp />} />
+            <Route path="/new-internship" element = {<NewInternship />} />
           </Routes>
         </div>
       </Router>

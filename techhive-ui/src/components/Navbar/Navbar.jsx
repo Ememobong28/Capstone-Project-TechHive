@@ -3,7 +3,7 @@ import Logo from '../Logo/Logo';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 import { UserContext } from '../../UserContext';
-import { FaUserCircle } from 'react-icons/fa'; // import the icon
+import { FaUserCircle } from 'react-icons/fa'; 
 
 function Navbar() {
   const { user, setUser } = useContext(UserContext);

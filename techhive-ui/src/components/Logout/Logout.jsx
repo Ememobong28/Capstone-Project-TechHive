@@ -10,7 +10,6 @@ function Logout() {
     setUser(null);
 
     localStorage.removeItem('user');
-
     navigate('/');
   };
 
