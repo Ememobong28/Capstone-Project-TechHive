@@ -17,7 +17,7 @@ export const User = sequelize.define('User', {
   },
   accountType: {
     type: DataTypes.ENUM('company', 'student'),
-    allowNull: false
+    allowNull: true
   },
   industry: {
     type: DataTypes.STRING,

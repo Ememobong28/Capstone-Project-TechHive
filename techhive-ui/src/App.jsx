@@ -12,17 +12,17 @@ import { UserProvider } from './UserContext.jsx';
 function App() {
   return (
     <UserProvider>
-    <Router>
-      <div>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<div><WelcomeSection /><WhatWeOffer /></div>} />
-          <Route path="/internships" element={<Internships />} />
-          <Route path="/login" element ={<Login />} />
-          <Route path="/signup" element ={<SignUp />} />
-        </Routes>
-      </div>
-    </Router>
+      <Router>
+        <div>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<div><WelcomeSection /><WhatWeOffer /></div>} />
+            <Route path="/internships" element={<Internships />} />
+            <Route path="/login" element ={<Login />} />
+            <Route path="/signup" element ={<SignUp />} />
+          </Routes>
+        </div>
+      </Router>
     </UserProvider>
   );
 }
