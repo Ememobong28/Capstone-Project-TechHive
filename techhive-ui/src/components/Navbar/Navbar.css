@@ -5,7 +5,7 @@
   align-items: center;
   padding: 12px 20px;
   color: #333;
-  position: relative; /* This is important for absolute positioning of child elements */
+  position: relative; 
 }
 
 .nav-links {

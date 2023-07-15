@@ -54,16 +54,13 @@ function Login() {
       const response = await axios.post('http://localhost:3000/auth/login', { email, password });
       localStorage.setItem('user', JSON.stringify(response.data));
       setUser(response.data.user);
-      console.log(response.data);
       navigate('/');
     } catch (err) {
       console.error(err.response.data);
       if (err.response.data.message === 'User not found') {
         setError('No account found. Please create an account.');
         setTimeout(() => navigate('/signup'), 3000);
-      } else {
-        // something else
-      }
+      } 
     }
   };
 
@@ -91,7 +88,8 @@ function Login() {
               required
               style={styles.input}
             />
-            {error && <div className="alert">{error}</div>}
+            {error && <div className="alert">
+              {error}</div>}
             <Button type="submit" variant="contained" sx={styles.button}>
               Login
             </Button>

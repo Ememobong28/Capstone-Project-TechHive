@@ -1,12 +1,14 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, createContext } from 'react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import './Internships.css';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
 import { UserContext } from '../../UserContext.jsx';
-
+import { Link } from 'react-router-dom';
 
 Modal.setAppElement('#root');
+
+export const RefreshContext = createContext();
 
 function Internships() {
   const [internships, setInternships] = useState([]);
@@ -14,6 +16,7 @@ function Internships() {
   const { user } = useContext(UserContext);
   const [modalIsOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const [refreshData, setRefreshData] = useState(false); 
 
   useEffect(() => {
     if (!user) {
@@ -42,7 +45,7 @@ function Internships() {
     };
 
     fetchInternships();
-  }, []);
+  }, [refreshData]);
 
   const handleInternshipClick = (link) => {
     window.open(link, '_blank');
@@ -63,6 +66,7 @@ function Internships() {
   };
 
   return (
+  <RefreshContext.Provider value={setRefreshData}>
     <div className="internships-container">
       <Modal
         isOpen={modalIsOpen}
@@ -79,15 +83,18 @@ function Internships() {
        </div>
       </Modal>
       <h2>Internships</h2>
-      <div className="search-container">
-        <input
-          type="text"
-          placeholder="Search internships..."
-          value={searchQuery}
-          onChange={handleSearchInputChange}
-          className="search-input"
-        />
-      </div>
+      <div className="search-new-container">
+       <input
+         type="text"
+         placeholder="Search internships..."
+         value={searchQuery}
+         onChange={handleSearchInputChange}
+         className="search-input"
+       />
+     <Link to="/new-internship">
+      <button className='new-internships'>Post a New Internship</button>
+    </Link>
+   </div>
       <div className="internship-cards">
         {filteredInternships.map((internship) => (
           <div
@@ -96,7 +103,7 @@ function Internships() {
             onClick={() => handleInternshipClick(internship.link)}
           >
             <img
-              src={`http://localhost:3000/images${internship.picture}`}
+              src={`http://localhost:3000/images/${internship.picture}`}
               className="internship-image"
               alt="Internship"
             />
@@ -107,7 +114,7 @@ function Internships() {
                 Learn More
               </a>
               <p className="company">Company: {internship.company}</p>
-              <p className="category">Category: {internship.category}</p>
+              <p className="category">Category: {internship.category.join(', ')}</p>
             </div>
             <button className="like-button" onClick={(event) => handleLikeClick(event, internship)}>
               {internship.isLiked ? <AiFillHeart color="red"/> : <AiOutlineHeart />}
@@ -116,6 +123,7 @@ function Internships() {
         ))}
       </div>
     </div>
+  </RefreshContext.Provider>
   );
 }
 
