@@ -9,6 +9,7 @@ import { dirname } from 'path';
 import { sequelize } from './database.js';
 import { Internship } from './models/index.js';
 import { User } from './models/index.js';
+import { SavedInternship } from './models/savedInternships.js';
 import {router as authRoutes} from './routes/authRoutes.js';
 import { authenticateToken } from './routes/authRoutes.js';
 
@@ -201,6 +202,46 @@ app.get('/profile/picture/:userId', async (req, res) => {
     res.sendFile(filePath);
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+});
+
+//Routes for Saved Internships
+app.post('/internships/:id/save', async (req, res) => {
+  const userId = req.body.userId;
+  const internshipId = req.params.id;
+
+  try {
+    const savedInternship = await SavedInternship.create({ userId, internshipId });
+    res.json(savedInternship);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/internships/:id/save', async (req, res) => {
+  const userId = req.body.userId;
+  const internshipId = req.params.id;
+
+  try {
+    await SavedInternship.destroy({ where: { userId, internshipId } });
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+app.get('/users/:id/saved-internships', async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    const savedInternships = await SavedInternship.findAll({
+      where: { userId },
+      include: Internship,
+    });
+    res.json(savedInternships.map(si => si.Internship));
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 

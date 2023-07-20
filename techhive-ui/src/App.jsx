@@ -10,6 +10,7 @@ import './App.css';
 import { UserProvider } from './UserContext.jsx';
 import NewInternship from './components/NewInternship/NewInternship.jsx';
 import Profile from './components/Profile/Profile.jsx'
+import SavedInternships from './components/SavedInternships/SavedInternships.jsx';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
             <Route path="/signup" element ={<SignUp />} />
             <Route path="/new-internship" element = {<NewInternship />} />
             <Route path="/profile" element ={<Profile/>} />
+            <Route path="/saved-internships" element ={<SavedInternships/>} />
           </Routes>
         </div>
       </Router>

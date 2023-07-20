@@ -31,5 +31,8 @@ export const Internship = sequelize.define('Internship', {
     type: DataTypes.ARRAY(DataTypes.STRING),
     allowNull: false
   },
+}, {
+  tableName: 'internships'
+
 });
 

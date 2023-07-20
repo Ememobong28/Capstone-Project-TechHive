@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext, createContext } from 'react';
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { AiFillHeart, AiOutlineHeart} from 'react-icons/ai';
+import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 import './Internships.css';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
@@ -38,7 +39,8 @@ function Internships() {
         const response = await fetch('http://localhost:3000/internships');
         const data = await response.json();
         data.forEach(internship => {
-          internship.isLiked = false; 
+          internship.isLiked = false;
+          internship.isSaved = false; 
         });
         setInternships(data);
       } catch (error) {
@@ -86,7 +88,46 @@ function Internships() {
     setInternships([...internships]);
   };
 
-  return (
+  const handleSaveClick = async (event, internship) => {
+    event.stopPropagation();
+    try {
+      if (internship.isSaved) {
+        await fetch(`http://localhost:3000/internships/${internship.id}/save`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId: user.id }),
+        });
+  
+        // Update isSaved state
+        const updatedInternships = internships.map(i => 
+          i.id === internship.id ? { ...i, isSaved: false } : i
+        );
+        setInternships(updatedInternships);
+  
+      } else {
+        await fetch(`http://localhost:3000/internships/${internship.id}/save`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId: user.id }),
+        });
+  
+        // Update isSaved state
+        const updatedInternships = internships.map(i => 
+          i.id === internship.id ? { ...i, isSaved: true } : i
+        );
+        setInternships(updatedInternships);
+  
+      }
+    } catch (error) {
+      console.error('Error saving internship:', error);
+    }
+  };
+  
+return (
   <RefreshContext.Provider value={setRefreshData}>
     <div className="internships-container">
       <Modal
@@ -156,6 +197,10 @@ function Internships() {
             <button className="like-button" onClick={(event) => handleLikeClick(event, internship)}>
               {internship.isLiked ? <AiFillHeart color="red"/> : <AiOutlineHeart />}
             </button>
+
+            <button className="save-button" onClick={(event) => handleSaveClick(event, internship)}>
+                {internship.isSaved ? <FaBookmark color="blue" /> : <FaRegBookmark />}
+              </button>
           </div>
         ))}
       </div>

@@ -99,7 +99,7 @@
 .search-input {
     padding: 10px;
     width: 30%;
-    border: 1px solid #ccc;
+    border: 1px solid #333333;
     border-radius: 4px;
     font-size: 16px;
   }
@@ -107,12 +107,13 @@
 .like-button {
     align-self: flex-end; 
     border: none;
-    background: none;
+    background: white;
     cursor: pointer;
     margin-right: 30px;
     margin-bottom: 30px;
     font-size: 20px; 
     outline: none;
+    color: #333333;
   }
 
 .like-button.active {
