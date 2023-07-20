@@ -61,4 +61,43 @@
   color: #ff6f00;
 }
 
+.profile-icon {
+  background: none;
+  border: none;
+  color:#1c1c1c;
+  font-size: 20px;
+  cursor: pointer;
+  position: relative;
+}
+
+.profile-icon:hover{
+  background-color: #fee3e8 ;
+}
+
+.dropdown-menu {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  background: #1c1c1c; 
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  top: 60px;
+  right: 0;
+  width: 150px; 
+}
+
+.dropdown-item {
+  text-decoration: none;
+  color: #ffffff; 
+  font-size: 14px;
+  padding: 10px 20px; 
+}
+
+.dropdown-item:hover {
+  background: #333333; 
+  border-radius: 3px; 
+}
+
 

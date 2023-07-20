@@ -53,15 +53,13 @@ const NewInternship = () => {
       }
     } catch (error) {
       if (error.response) {
-        // client received an error response (5xx, 4xx)
         const serverErrors = error.response.data.errors;
-        const errorMessages = serverErrors.map(err => err.msg);  // Extract error messages
+        const errorMessages = serverErrors.map(err => err.msg);  
         setErrors(errorMessages);
       } else if (error.request) {
         // client never received a response, or request never left
         setErrors(['Network error, please try again']);
       } else {
-        // anything else
         setErrors(['An error occurred, please try again']);
       }
     }

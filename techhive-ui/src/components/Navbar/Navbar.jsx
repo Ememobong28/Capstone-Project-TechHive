@@ -1,17 +1,18 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Logo from '../Logo/Logo';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 import { UserContext } from '../../UserContext';
-import { FaUserCircle } from 'react-icons/fa'; 
+import { FaUserCircle } from 'react-icons/fa';
+import Logout from '../Logout/Logout';
 
-function Navbar() {
-  const { user, setUser } = useContext(UserContext);
+const Navbar = () => {
+  const { user } = useContext(UserContext);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
 
-  const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem('user');
-  }
+  const toggleDropdown = () => {
+    setDropdownVisible(!dropdownVisible);
+  };
 
   return (
     <nav className="navbar">
@@ -23,22 +24,28 @@ function Navbar() {
         <li><Link to="/programs">Programs</Link></li>
       </ul>
       <div className="auth-container">
-        {user && <FaUserCircle className="profile-icon"/>}
-        <div className="auth-links">
-          {user ? (
-            <span onClick={handleLogout}>
-              <Link to="/">Logout</Link>
-            </span>
-          ) : (
-            <>
-              <span><Link to="/login">Login</Link></span>
-              <span><Link to="/signup">SignUp</Link></span>
-            </>
-          )}
-        </div>
+      {user ? ( 
+          <>
+            <button onClick={toggleDropdown} className="profile-icon">
+              <FaUserCircle />
+            </button>
+            {dropdownVisible && (
+              <div className="dropdown-menu">
+                <Link onClick={toggleDropdown} className="dropdown-item" to="/profile">Profile</Link>
+                <Link onClick={toggleDropdown} className="dropdown-item" to="/saved-internships">Saved Internships</Link>
+              </div>
+            )}
+            <Logout />
+          </>
+        ) : (
+          <div className="auth-links">
+            <span><Link to="/login">Login</Link></span>
+            <span><Link to="/signup">SignUp</Link></span>
+          </div>
+        )}
       </div>
     </nav>
   );
-}
+};
 
 export default Navbar;
