@@ -1,9 +1,13 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { Box, Button, Container, Typography } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
+import { Box, Button, Container, Typography , IconButton, InputAdornment, TextField} from '@mui/material';
 import { UserContext } from '../../UserContext';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import './Login.css';
+import LockIcon from '@mui/icons-material/Lock';
+import MailIcon from '@mui/icons-material/Mail';
 
 const styles = {
   formContainer: {
@@ -43,24 +47,31 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [showPassword, setShowPassword] = useState(false); 
 
   const navigate = useNavigate();
 
-  const { setUser } = useContext(UserContext);
+  
+  const { setUser} = useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:3000/auth/login', { email, password });
-      localStorage.setItem('user', JSON.stringify(response.data));
-      setUser(response.data.user);
-      navigate('/');
+      if (response.data && response.data.user && response.data.token) {
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        console.log(response.data.user)
+        setUser(response.data.user); // Set the user in the user context
+        navigate('/');
+      } else {
+        setError('Invalid server response');
+      }
     } catch (err) {
-      console.error(err.response.data);
-      if (err.response.data.message === 'User not found') {
+      console.error(err);
+      if (err.response && err.response.data && err.response.data.message === 'User not found') {
         setError('No account found. Please create an account.');
         setTimeout(() => navigate('/signup'), 3000);
-      } 
+      }
     }
   };
 
@@ -72,27 +83,64 @@ function Login() {
             <Typography variant="h5" component="h1" align="center" gutterBottom>
               Welcome Back!
             </Typography>
-            <input
+            <TextField
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email"
               required
+              fullWidth
               style={styles.input}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <MailIcon />
+                  </InputAdornment>
+                ),
+              }}
+              InputLabelProps={{
+                style: styles.inputLabel,
+              }}
             />
-            <input
-              type="password"
+            <TextField
+              type={showPassword ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
               required
+              fullWidth
               style={styles.input}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <LockIcon />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                      style={styles.iconButton}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              InputLabelProps={{
+                style: styles.inputLabel,
+              }}
             />
-            {error && <div className="alert">
-              {error}</div>}
-            <Button type="submit" variant="contained" sx={styles.button}>
-              Login
-            </Button>
+            {error && <div className="alert">{error}</div>}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <Button type="submit" variant="contained" sx={styles.button}>
+                Login
+              </Button>
+              <Typography variant="body2" component="p">
+                Don't have an account? <Link to="/signup">Sign up</Link>
+              </Typography>
+            </div>
           </form>
         </Box>
       </Container>

@@ -1,8 +1,7 @@
 .alert {
     color: red;
     margin-top: 10px;
-    /* Add more styles as needed */
-  }
+}
 
 button:hover{
     background: #0056b3;

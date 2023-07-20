@@ -3,18 +3,36 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/index.js';
 
-const router = express.Router();
+export const router = express.Router();
+
+export const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.sendStatus(401);
+  }
+
+  jwt.verify(token, 'your-secret-key', (err, user) => {
+    if (err) {
+      return res.sendStatus(403);
+    }
+    req.user = user; // Set the user ID in the request object
+    next();
+  });
+};
 
 // Route for user signup
 router.post('/signup', async (req, res) => {
   try {
-    const { username, email, password, accountType, industry } = req.body;
+    const { username, email, password, accountType, industry, university, major } = req.body;
 
-    // Check if the email already exists in the database
+    //Check if the email already exists in the database
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
       return res.status(409).json({ message: 'Email already exists' });
     }
+
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -27,6 +45,11 @@ router.post('/signup', async (req, res) => {
       await newUser.save();
     }
 
+    if (accountType === 'student') {
+      newUser.university = university;
+      newUser.major = major;
+      await newUser.save();
+    }
     // Generate a JWT token
     const token = jwt.sign({ userId: newUser.id }, 'your-secret-key');
 
@@ -71,5 +94,3 @@ router.get('/users', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
-export default router;

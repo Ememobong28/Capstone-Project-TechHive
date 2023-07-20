@@ -4,13 +4,22 @@ export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
-    const localUser = localStorage.getItem('user');
-    return localUser ? JSON.parse(localUser) : null;
+    try {
+      const localUser = localStorage.getItem('user');
+      return localUser ? JSON.parse(localUser) : null;
+    } catch (error) {
+      console.error('Error parsing user from localStorage:', error);
+      return null;
+    }
   });
 
   const setValue = (newUser) => {
-    setUser(newUser);
-    localStorage.setItem('user', JSON.stringify(newUser));
+    try {
+      setUser(newUser);
+      localStorage.setItem('user', JSON.stringify(newUser));
+    } catch (error) {
+      console.error('Error setting user to localStorage:', error);
+    }
   };
 
   return (

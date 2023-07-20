@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Confetti from 'react-confetti';
+import { UserContext } from '../../UserContext';
 import {
   Box,
   Button,
@@ -13,12 +14,15 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  IconButton,
   Typography,
 } from '@mui/material';
 import LockIcon from '@mui/icons-material/LockOutlined';
 import EmailIcon from '@mui/icons-material/Email';
 import PersonIcon from '@mui/icons-material/Person';
 import WorkIcon from '@mui/icons-material/Work';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import './SignUp.css';
 
 const styles = {
@@ -68,9 +72,12 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [showConfetti, setShowConfetti] = useState(false);
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState('');
   const [accountType, setAccountType] = useState('student');
   const [industry, setIndustry] = useState('');
+  const [university, setUniversity] = useState('');
+  const [major, setMajor] = useState('');
 
   const navigate = useNavigate();
 
@@ -86,12 +93,13 @@ const SignUp = () => {
         email,
         password,
         accountType,
-        industry,
+        industry: accountType === 'company' ? industry : null,
+        university: accountType === 'student' ? university : null,
+        major: accountType === 'student' ? major : null,
       });
       setShowConfetti(true);
       setTimeout(() => {
         setShowConfetti(false);
-
         navigate('/login');
       }, 3000);
     } catch (err) {
@@ -142,7 +150,7 @@ const SignUp = () => {
               </Grid>
               <Grid item xs={12}>
                 <Input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Password"
@@ -153,12 +161,23 @@ const SignUp = () => {
                       <LockIcon />
                     </InputAdornment>
                   }
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowPassword(!showPassword)}
+                        style={styles.iconButton}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
                   sx={styles.input}
                 />
               </Grid>
               <Grid item xs={12}>
                 <Input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm Password"
@@ -169,12 +188,25 @@ const SignUp = () => {
                       <LockIcon />
                     </InputAdornment>
                   }
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowPassword(!showPassword)}
+                        style={styles.iconButton}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
                   sx={styles.input}
                 />
               </Grid>
               <Grid item xs={12}>
                 <FormControl fullWidth sx={styles.input}>
-                  <InputLabel id="account-type-label" sx={styles.inputLabel}>Account Type</InputLabel>
+                  <InputLabel id="account-type-label" sx={styles.inputLabel}>
+                    Account Type
+                  </InputLabel>
                   <Select
                     labelId="account-type-label"
                     id="account-type"
@@ -218,10 +250,51 @@ const SignUp = () => {
                   />
                 </Grid>
               )}
+              {accountType === 'student' && (
+                <>
+                  <Grid item xs={12}>
+                    <Input
+                      type="text"
+                      value={university}
+                      onChange={(e) => setUniversity(e.target.value)}
+                      placeholder="University"
+                      fullWidth
+                      required
+                      startAdornment={
+                        <InputAdornment position="start">
+                          <PersonIcon />
+                        </InputAdornment>
+                      }
+                      sx={styles.input}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Input
+                      type="text"
+                      value={major}
+                      onChange={(e) => setMajor(e.target.value)}
+                      placeholder="Major"
+                      fullWidth
+                      required
+                      startAdornment={
+                        <InputAdornment position="start">
+                          <PersonIcon />
+                        </InputAdornment>
+                      }
+                      sx={styles.input}
+                    />
+                  </Grid>
+                </>
+              )}
               <Grid item xs={12}>
-                <Button type="submit" variant="contained" fullWidth sx={styles.button}>
-                  Sign Up
-                </Button>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <Button type="submit" variant="contained" fullWidth sx={styles.button}>
+                    Sign Up
+                  </Button>
+                  <Typography variant="body2" component="p">
+                    Already have an account? <Link to="/login">Login</Link>
+                  </Typography>
+                </div>
               </Grid>
             </Grid>
           </form>

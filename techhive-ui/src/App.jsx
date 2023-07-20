@@ -9,8 +9,11 @@ import SignUp from './components/Signup/Signup.jsx';
 import './App.css';
 import { UserProvider } from './UserContext.jsx';
 import NewInternship from './components/NewInternship/NewInternship.jsx';
+import Profile from './components/Profile/Profile.jsx'
+
 
 function App() {
+  
   return (
     <UserProvider>
       <Router>
@@ -22,6 +25,7 @@ function App() {
             <Route path="/login" element ={<Login />} />
             <Route path="/signup" element ={<SignUp />} />
             <Route path="/new-internship" element = {<NewInternship />} />
+            <Route path="/profile" element ={<Profile/>} />
           </Routes>
         </div>
       </Router>

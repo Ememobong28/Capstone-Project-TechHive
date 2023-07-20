@@ -22,5 +22,21 @@ export const User = sequelize.define('User', {
   industry: {
     type: DataTypes.STRING,
     allowNull: true
+  }, 
+  companyName: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  university: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  major: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  picture: {
+    type: DataTypes.STRING,
+    allowNull: true
   }
 });

@@ -13,6 +13,8 @@ export const RefreshContext = createContext();
 function Internships() {
   const [internships, setInternships] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [filterType, setFilterType] = useState('all');
+  const [filterValue, setFilterValue] = useState('');
   const { user } = useContext(UserContext);
   const [modalIsOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
@@ -55,8 +57,27 @@ function Internships() {
     setSearchQuery(event.target.value);
   };
 
+  const handleFilterTypeChange = (event) => {
+    setFilterType(event.target.value);
+    setFilterValue('');
+  };
+
+  const handleFilterValueChange = (event) => {
+    setFilterValue(event.target.value);
+  };
+
+  const filterInternships = (internship) => {
+    if (filterType === 'company') {
+      return internship.company.toLowerCase().includes(filterValue.toLowerCase());
+    } else if (filterType === 'category') {
+      return internship.category.includes(filterValue);
+    }
+    return true; // No filter or 'all' filter selected
+  };
+
   const filteredInternships = internships.filter((internship) =>
-    internship.title.toLowerCase().includes(searchQuery.toLowerCase())
+    internship.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
+    filterInternships(internship)
   );
 
   const handleLikeClick = (event, internship) => {
@@ -91,6 +112,22 @@ function Internships() {
          onChange={handleSearchInputChange}
          className="search-input"
        />
+       <div className="filter-container">
+            <select value={filterType} onChange={handleFilterTypeChange} className="filter-dropdown">
+              <option value="all">All</option>
+              <option value="company">Company</option>
+              <option value="category">Category</option>
+            </select>
+            {filterType !== 'all' && (
+              <input
+                type="text"
+                placeholder={`Filter by ${filterType}...`}
+                value={filterValue}
+                onChange={handleFilterValueChange}
+                className="filter-input"
+              />
+            )}
+          </div>
      <Link to="/new-internship">
       <button className='new-internships'>Post a New Internship</button>
     </Link>
