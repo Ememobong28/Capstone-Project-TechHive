@@ -1,8 +1,7 @@
-// seed.js
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { User, Internship } from './models/index.js';
+import { User, Internship, SavedInternship } from './models/index.js';
 import { sequelize } from './database.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -10,18 +9,28 @@ const __dirname = path.dirname(__filename);
 
 const userData = JSON.parse(fs.readFileSync(path.resolve(__dirname, './seeders/users.json'), 'utf8'));
 const internshipData = JSON.parse(fs.readFileSync(path.resolve(__dirname, './seeders/internships.json'), 'utf8'));
+const savedInternshipData = JSON.parse(fs.readFileSync(path.resolve(__dirname, './seeders/savedInternships.json'), 'utf8'));
 
 const seedDatabase = async () => {
   try {
-    // Sync all models that aren't already in the database
     await sequelize.sync({ alter: true });
 
-    // Then seed the User, Post, and Internship data
-    await User.bulkCreate(userData);
+    const createdUsers = await User.bulkCreate(userData);
     console.log('User data has been seeded!');
 
-    await Internship.bulkCreate(internshipData.internships);
+    const createdInternships = await Internship.bulkCreate(internshipData.internships);
     console.log('Internship data has been seeded!');
+
+    const savedInternshipDataWithIds = savedInternshipData.map((item, index) => {
+      return {
+        ...item,
+        userId: createdUsers[index].id,
+        internshipId: createdInternships[index].id
+      };
+    });
+
+    await SavedInternship.bulkCreate(savedInternshipDataWithIds);
+    console.log('Saved Internship data has been seeded!');
 
   } catch (error) {
     console.error('Error seeding data:', error);
@@ -29,5 +38,6 @@ const seedDatabase = async () => {
     await sequelize.close();
   }
 };
+
 
 seedDatabase();

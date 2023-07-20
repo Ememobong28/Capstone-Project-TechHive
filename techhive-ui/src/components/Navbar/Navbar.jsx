@@ -5,6 +5,7 @@ import './Navbar.css';
 import { UserContext } from '../../UserContext';
 import { FaUserCircle } from 'react-icons/fa';
 import Logout from '../Logout/Logout';
+import { FaBookmark } from 'react-icons/fa';
 
 const Navbar = () => {
   const { user } = useContext(UserContext);
@@ -32,7 +33,7 @@ const Navbar = () => {
             {dropdownVisible && (
               <div className="dropdown-menu">
                 <Link onClick={toggleDropdown} className="dropdown-item" to="/profile">Profile</Link>
-                <Link onClick={toggleDropdown} className="dropdown-item" to="/saved-internships">Saved Internships</Link>
+                <Link onClick={toggleDropdown} className="dropdown-item" to="/saved-internships"> <FaBookmark /> Saved Internships</Link>
               </div>
             )}
             <Logout />

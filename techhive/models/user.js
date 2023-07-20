@@ -38,5 +38,7 @@ export const User = sequelize.define('User', {
   picture: {
     type: DataTypes.STRING,
     allowNull: true
-  }
+  },
+},{
+  tableName: 'users'
 });
