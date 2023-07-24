@@ -12,11 +12,14 @@ import { User } from './models/index.js';
 import { SavedInternship } from './models/savedInternships.js';
 import {router as authRoutes} from './routes/authRoutes.js';
 import { authenticateToken } from './routes/authRoutes.js';
+import sgMail from '@sendgrid/mail';
+sgMail.setApiKey('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');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
+
 
 app.use(cors());
 app.use(express.json()); //Middleware for parsing JSON bodies from HTTP requests
@@ -113,6 +116,34 @@ app.post(
       const internship = req.body;
       internship.picture = req.file.filename; // Assigning the saved file name to the picture field
       const newInternship = await Internship.create(internship);
+
+      // Get all student users' email addresses from the database
+      const studentUsers = await User.findAll({
+        where: {
+          accountType: 'student',
+        },
+      });
+      
+      const sendPromises = studentUsers.map(async (student) => {
+        const msg = {
+          to: student.email,
+          from: 'techhivewebsite@gmail.com', 
+          subject: 'New Internship Opportunity',
+          text: `Dear ${student.username}, a new internship is available. Check it out: ${internship.link}`,
+          html: `<p>Dear ${student.username},</p><p>A new internship is available. Check it out: <a href="${internship.link}">${internship.link}</a></p>`,
+        };
+        
+        try {
+          await sgMail.send(msg);
+          console.log(`Email sent to ${student.email}`);
+        } catch (error) {
+          console.error(`Error sending email to ${student.email}:`, error);
+        }
+      });
+
+      // Wait for all email sending promises to complete
+      await Promise.all(sendPromises);
+
       res.status(201).json(newInternship);
     } catch (err) {
       console.error(err);
@@ -120,6 +151,7 @@ app.post(
     }
   }
 );
+
 
 // Route to get all users
 app.get('/users', async (req, res) => {
@@ -244,6 +276,35 @@ app.get('/users/:id/saved-internships', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+async function sendNotificationToStudents(internshipLink) {
+  try {
+    // Retrieve all student users' email addresses from the database
+    const students = await User.findAll({
+      where: {
+        accountType: 'student',
+      },
+    });
+
+    // Send email notification to each student using SendGrid
+    for (const student of students) {
+      const msg = {
+        to: student.email,
+        from: 'techhivewebsite@gmail.com', // Replace with your verified sender email
+        subject: 'New Internship Opportunity',
+        text: `Dear ${student.username}, a new internship is available. Check it out: ${internshipLink}`,
+        html: `<p>Dear ${student.username},</p><p>A new internship is available. Check it out: <a href="${internshipLink}">${internshipLink}</a></p>`,
+      };
+
+      await sgMail.send(msg);
+    }
+
+    console.log('Email notifications sent successfully to all students.');
+  } catch (error) {
+    console.error('Error sending email notifications:', error);
+  }
+}
+
 
 
 sequelize
