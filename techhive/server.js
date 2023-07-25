@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import multer from 'multer';
+import mongoose from 'mongoose';
 import { body, validationResult } from 'express-validator';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -13,17 +14,35 @@ import { SavedInternship } from './models/savedInternships.js';
 import {router as authRoutes} from './routes/authRoutes.js';
 import { authenticateToken } from './routes/authRoutes.js';
 import sgMail from '@sendgrid/mail';
-sgMail.setApiKey('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');
+import dotenv from 'dotenv';
+import messageRoutes from './routes/messages.js'
+
+sgMail.setApiKey('//Took API key out to prevent privacy exposure in Github');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-
+dotenv.config();
 
 app.use(cors());
 app.use(express.json()); //Middleware for parsing JSON bodies from HTTP requests
 app.use(morgan('combined'));
+
+//MongoDb Database Setup
+mongoose.connect(process.env.MONGO_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+ })
+.then(() => {
+  console.log("DB Connection Successfull")
+ }).catch((err) => {
+  console.log(err.message)
+ })
+
+const server = app.listen(process.env.PORT, ()=> {
+  console.log(`Server Started on Port ${process.env.PORT}`)
+});
 
 // Setup multer for file uploads
 const storage = multer.diskStorage({
@@ -49,8 +68,9 @@ const upload = multer({
 
 // Route for user authentication and account creation
 app.use('/auth', authRoutes);
-
+app.use('/api/messages', messageRoutes)
 app.use('/images', express.static(path.join(__dirname, 'images')));
+
 
 app.get('/', (req, res) => {
   res.send('Welcome to the TechHive API!');
@@ -114,7 +134,7 @@ app.post(
 
     try {
       const internship = req.body;
-      internship.picture = req.file.filename; // Assigning the saved file name to the picture field
+      internship.picture = req.file.filename;
       const newInternship = await Internship.create(internship);
 
       // Get all student users' email addresses from the database
@@ -152,7 +172,6 @@ app.post(
   }
 );
 
-
 // Route to get all users
 app.get('/users', async (req, res) => {
   try {
@@ -176,6 +195,7 @@ app.get('/users/:id', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
 
 // Setup multer for profile picture uploads
 const profilePictureStorage = multer.diskStorage({
@@ -276,34 +296,6 @@ app.get('/users/:id/saved-internships', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
-async function sendNotificationToStudents(internshipLink) {
-  try {
-    // Retrieve all student users' email addresses from the database
-    const students = await User.findAll({
-      where: {
-        accountType: 'student',
-      },
-    });
-
-    // Send email notification to each student using SendGrid
-    for (const student of students) {
-      const msg = {
-        to: student.email,
-        from: 'techhivewebsite@gmail.com', // Replace with your verified sender email
-        subject: 'New Internship Opportunity',
-        text: `Dear ${student.username}, a new internship is available. Check it out: ${internshipLink}`,
-        html: `<p>Dear ${student.username},</p><p>A new internship is available. Check it out: <a href="${internshipLink}">${internshipLink}</a></p>`,
-      };
-
-      await sgMail.send(msg);
-    }
-
-    console.log('Email notifications sent successfully to all students.');
-  } catch (error) {
-    console.error('Error sending email notifications:', error);
-  }
-}
 
 
 
