@@ -15,6 +15,7 @@ import {router as authRoutes} from './routes/authRoutes.js';
 import { authenticateToken } from './routes/authRoutes.js';
 import sgMail from '@sendgrid/mail';
 import dotenv from 'dotenv';
+import { Server } from 'socket.io';
 import messageRoutes from './routes/messages.js'
 
 sgMail.setApiKey('//Took API key out to prevent privacy exposure in Github');
@@ -30,6 +31,8 @@ app.use(express.json()); //Middleware for parsing JSON bodies from HTTP requests
 app.use(morgan('combined'));
 
 //MongoDb Database Setup
+mongoose.set('debug', true);
+
 mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -43,6 +46,29 @@ mongoose.connect(process.env.MONGO_URL, {
 const server = app.listen(process.env.PORT, ()=> {
   console.log(`Server Started on Port ${process.env.PORT}`)
 });
+
+//Setting up socket io
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    credentials: true,
+  },
+});
+
+global.onlineUsers = new Map();
+io.on("connection", (socket) => {
+  global.chatSocket = socket;
+  socket.on("add-user", (userId) => {
+    onlineUsers.set(userId, socket.id);
+  });
+
+  socket.on("send-msg", (data) => {
+    const sendUserSocket = onlineUsers.get(data.to);
+    if (sendUserSocket) {
+      socket.to(sendUserSocket).emit("msg-receiver", data.msg);
+    }
+  })
+})
 
 // Setup multer for file uploads
 const storage = multer.diskStorage({
