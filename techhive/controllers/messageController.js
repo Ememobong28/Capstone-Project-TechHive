@@ -5,6 +5,8 @@ import mongoose from 'mongoose';
 export async function getMessages(req, res, next) {
     try {
       const { from, to } = req.body;
+
+      console.log("req.body: ",req.body)
   
       // Check if the sender and receiver exist in the user database using Sequelize
       const senderExists = await User.findOne({ where: { username: from } });
@@ -17,8 +19,10 @@ export async function getMessages(req, res, next) {
   
       // Now use Mongoose to find messages between the specified sender and receiver
       const messages = await Messages.find({
-        sender: from,
-        receiver: to,
+        $or: [
+            { sender: from, receiver: to },
+            { sender: to, receiver: from },
+          ],
       }).sort({ updatedAt: 1 });
   
       const projectedMessages = messages.map((msg) => {

@@ -100,4 +100,16 @@
   border-radius: 3px; 
 }
 
+.chat{
+  background-color: #fee3e8;
+}
+
+.chat:hover{
+  background:  #fee3e8;;
+  background-color: #fee3e8;
+}
+
+.logged {
+  gap: 10px;
+}
 
