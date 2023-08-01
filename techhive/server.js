@@ -10,6 +10,7 @@ import { dirname } from 'path';
 import { sequelize } from './database.js';
 import { Internship } from './models/index.js';
 import { User } from './models/index.js';
+import { UserLikedInternship } from './models/userLikedInternship.js';
 import { SavedInternship } from './models/savedInternships.js';
 import {router as authRoutes} from './routes/authRoutes.js';
 import { authenticateToken } from './routes/authRoutes.js';
@@ -336,7 +337,6 @@ app.delete('/internships/:id/save', async (req, res) => {
   }
 });
 
-
 app.get('/users/:id/saved-internships', async (req, res) => {
   const userId = req.params.id;
 
@@ -351,7 +351,17 @@ app.get('/users/:id/saved-internships', async (req, res) => {
   }
 });
 
+app.post('/api/like-internships/:id', async (req, res) => {
+  const userId = req.body.userId;
+  const internshipId = req.params.id;
 
+  try {
+    const likedInternship = await UserLikedInternship.create({ userId, internshipId });
+    res.json(likedInternship);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 sequelize
   .sync({ alter: true })
