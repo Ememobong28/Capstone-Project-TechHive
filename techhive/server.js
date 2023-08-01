@@ -16,7 +16,9 @@ import { authenticateToken } from './routes/authRoutes.js';
 import sgMail from '@sendgrid/mail';
 import dotenv from 'dotenv';
 import { Server } from 'socket.io';
+import session from 'express-session';
 import messageRoutes from './routes/messages.js'
+import SequelizeStoreInit from 'connect-session-sequelize';
 
 sgMail.setApiKey('//Took API key out to prevent privacy exposure in Github');
 
@@ -26,9 +28,35 @@ const __dirname = dirname(__filename);
 const app = express();
 dotenv.config();
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
 app.use(express.json()); //Middleware for parsing JSON bodies from HTTP requests
 app.use(morgan('combined'));
+
+//Storing sessions in database
+
+const SequelizeStore = SequelizeStoreInit(session.Store);
+const sessionStore = new SequelizeStore({
+  db: sequelize
+});
+
+//Configure session middleware
+app.use(
+  session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    store: sessionStore,
+    cookie: {
+      sameSite: false,
+      secure: false,
+      expires: new Date(Date.now() + (365 * 24 * 60 * 60 * 1000)) // 1 year in milliseconds
+    }
+  })
+);
+sessionStore.sync();
 
 //MongoDb Database Setup
 mongoose.set('debug', true);

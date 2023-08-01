@@ -12,97 +12,177 @@ export default function ChatContainer({ currentChat, socket }) {
     const scrollRef = useRef();
     const [receivedMessages, setReceivedMessages] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
-    const [filteredMessages, setFilteredMessages] = useState([]);
-    
+  
 
 useEffect(() => {
-    const fetchMessages = async () => {
-        try {
-          const response = await axios.post(receiveMessageRoute, {
-            from: user.username,
-            to: currentChat.username,
-          });
-          const messagesFromServer = response.data;
-      
-          // Filter messages where the sender is the current user (fromSelf)
-          const sentMessages = messagesFromServer
-            .filter((msg) => msg.sender === user.username)
-            .map((msg) => ({
-              ...msg,
-              timestamp: parseISOString(msg.createdAt),
-              originalTimestamp: msg.createdAt,
-            }));
-      
-          // Filter messages where the sender is the current chat user (received messages)
-          const receivedMessages = messagesFromServer
-            .filter((msg) => msg.sender === currentChat.username)
-            .map((msg) => ({
-              ...msg,
-              timestamp: parseISOString(msg.createdAt),
-              originalTimestamp: msg.createdAt,
-            }));
-      
-          setMessages(sentMessages);
-          setReceivedMessages(receivedMessages);
-        } catch (error) {
-          console.error("Error fetching messages:", error);
-        }
-      };
+  const fetchMessages = async () => {
+    try {
+      const response = await axios.post(receiveMessageRoute, {
+        from: user.username,
+        to: currentChat.username,
+      });
+      const messagesFromServer = response.data;
+
+      const formattedMessages = messagesFromServer.map((msg) => ({
+        ...msg,
+        fromSelf: msg.sender === user.username,
+        timestamp: parseISOString(msg.createdAt),
+        originalTimestamp: parseISOString(msg.createdAt),
+        
+      }));
+
+      console.log(
+        "Parsed dates:",
+        formattedMessages.map((msg) => msg.timestamp)
+      );
+
+      formattedMessages.sort((a, b) => a.timestamp - b.timestamp);
+
+      setMessages(formattedMessages);
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+    }
+  };
 
   if (currentChat && user) {
     fetchMessages();
   }
 }, [currentChat, user]);
 
-  
- const handleSendMsg = async (msg) => {
-      try {
-        socket.current.emit("send-msg", {
-          to: currentChat.username,
-          from: user.username,
-          msg,
-        }, {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-        });
-  
-        const response = await axios.post(sendMessageRoute, {
-            from: user.username,
-            to: currentChat.username,
-            message: msg,
-          });
-      
-        const createdAt = response.data.createdAt;
+// Function to check if two dates are the same day
+const isSameDay = (date1, date2) =>
+date1.getDate() === date2.getDate() &&
+date1.getMonth() === date2.getMonth() &&
+date1.getFullYear() === date2.getFullYear();
 
-        const newMessage = {
-        fromSelf: true,
+// Function to format the date for display
+const formatDate = (date) => {
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  if (!date || !(date instanceof Date && !isNaN(date))) {
+    return "Hello Invalid Date: " + date;
+  }
+
+  if (isSameDay(date, today)) {
+    return "Today";
+  } else if (isSameDay(date, yesterday)) {
+    return "Yesterday";
+  } else {
+    const options = { month: "short", day: "numeric" };
+    const day = date.getDate();
+    let suffix = "th";
+    if (day !== 11 && day !== 12 && day !== 13) {
+      if (day % 10 === 1) {
+        suffix = "st";
+      } else if (day % 10 === 2) {
+        suffix = "nd";
+      } else if (day % 10 === 3) {
+        suffix = "rd";
+      }
+    }
+    return date.toLocaleDateString(undefined, options) + " " + day + suffix;
+  }
+}
+
+
+
+// Helper function to group messages by date
+const groupMessagesByDate = (messages) => {
+  const groupedMessages = [];
+  let currentDate = null;
+  let lastDateSeparator = null;
+
+  messages.forEach((message) => {
+    const timestamp = new Date(message.originalTimestamp);
+
+    if (!currentDate || !isSameDay(timestamp, currentDate)) {
+      currentDate = timestamp;
+      const formattedDate = formatDate(currentDate);
+      // Avoid adding another date separator if it's the same as the last one
+      if (formattedDate !== lastDateSeparator) {
+        groupedMessages.push({
+          type: "dateSeparator",
+          timestamp: currentDate,
+        });
+        lastDateSeparator = formattedDate;
+      }
+    }
+
+    groupedMessages.push({
+      type: "message",
+      ...message,
+    });
+  });
+
+  return groupedMessages;
+};
+
+
+// Merge and sort sent and received messages
+let allMessages = [...messages, ...receivedMessages];
+allMessages.sort((a, b) => a.timestamp - b.timestamp);
+allMessages = groupMessagesByDate(allMessages);
+
+
+const handleSendMsg = async (msg) => {
+  try {
+    socket.current.emit("send-msg", {
+      to: currentChat.username,
+      from: user.username,
+      msg,
+    }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+    });
+
+    const response = await axios.post(sendMessageRoute, {
+        from: user.username,
+        to: currentChat.username,
         message: msg,
-        timestamp: new Date(s),
-        originalTimestamp: createdAt, 
-      };
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-      
-      
+      });
+
+
+    const createdAt = parseISOString(response.data.createdAt);
+    const newMessage = {
+      fromSelf: true,
+      message: msg,
+      timestamp: createdAt,
+      originalTimestamp: createdAt,
+    };
+
+    setMessages((prevMessages) => {
+      let newMessages = [...prevMessages, newMessage];
+      newMessages.sort((a, b) => a.timestamp - b.timestamp);
+      return newMessages;
+    });
+  } catch (error) {
+    console.error("Error sending message:", error);
+  }
+};
+
+
+  useEffect(() => {
+  if (socket.current) {
+    socket.current.on("msg-receiver", (msg) => {
       const receivedMessage = {
         fromSelf: false,
-        message: msg,
-        timestamp: new Date(s),
-        originalTimestamp: new Date(s), 
+        message: msg.message,
+        timestamp: parseISOString(msg.timestamp),
+        originalTimestamp: parseISOString(msg.timestamp),
       };
-      setReceivedMessages((prev) => [...prev, receivedMessage]);
-    } catch (error) {
-      console.error("Error sending message:", error);
-    }
-  };
-  
-    useEffect(() => {
-      if (socket.current) {
-        socket.current.on("msg-receiver", (msg) => {
-            setReceivedMessages((prev) => [...prev, { fromSelf: false, message: msg , timestamp: new Date()}]);
-        });
-      }
-    }, [socket]);
+      
+      setMessages((prevMessages) => {
+        let newMessages = [...prevMessages, receivedMessage];
+        newMessages.sort((a, b) => a.timestamp - b.timestamp);
+        return newMessages;
+      });
+    });
+  }
+}, [socket]);
+
   
     // Helper function to check if a message contains the search query
     const doesMessageContainQuery = (message, query) => {
@@ -145,13 +225,13 @@ useEffect(() => {
   };
 
 
-    return (
-        <Container>
-          <ChatHeader>
-           <UserDetails>
-            <Avatar src="//this" alt="" />
-            <h3>{currentChat.username}</h3>
-          </UserDetails>
+  return (
+    <Container>
+      <ChatHeader>
+        <UserDetails>
+          <Avatar src="//this" alt="" />
+          <h3>{currentChat.username}</h3>
+        </UserDetails>
         <SearchContainer>
           <SearchInput
             type="text"
@@ -171,41 +251,49 @@ useEffect(() => {
           )}
         </SearchContainer>
       </ChatHeader>
-        <ChatMessages>
-        {messages.map((message) => (
-          <Message key={uuidv4()} fromSelf={message.fromSelf} id={`message-${message.originalTimestamp}`}>
-            <div className="content">
-              <SearchHighlight
-                text={message.message}
-                query={searchQuery}
-                highlightStyle={{ backgroundColor: "yellow" }}
-              />
-              {message.fromSelf ? <span className="sender">You</span> : null}
-            </div>
-            <span className="timestamp">{formatTimestamp(message.timestamp)}</span>
-          </Message>
-        ))}
-        {receivedMessages.map((message) => (
-          <Message key={uuidv4()} fromSelf={message.fromSelf} id={`message-${message.originalTimestamp}`}>
-            <div className="content">
-              <SearchHighlight
-                text={message.message}
-                query={searchQuery}
-                highlightStyle={{ backgroundColor: "yellow" }}
-              />
-              {!message.fromSelf && <span className="receiver">{currentChat.username}</span>}
-            </div>
-            <span className="timestamp">{formatTimestamp(message.timestamp)}</span>
-          </Message>
-        ))}
+  
+      <ChatMessages>
+        {allMessages.map((item, index) => {
+          if (item.type === "dateSeparator") {
+            return (
+              <DateSeparator key={uuidv4()}>
+                {formatDate(item.timestamp)}
+              </DateSeparator>
+            );
+          } else {
+            const message = item;
+  
+            return (
+              <Message
+                key={uuidv4()}
+                fromSelf={message.fromSelf}
+                id={`message-${message.originalTimestamp}`}
+              >
+                <div className="content">
+                  <SearchHighlight
+                    text={message.message}
+                    query={searchQuery}
+                    highlightStyle={{ backgroundColor: "yellow" }}
+                  />
+                  {message.fromSelf ? <span className="sender">You</span> : null}
+                  <span className="timestamp">
+                    {formatTimestamp(message.timestamp)}
+                  </span>
+                </div>
+              </Message>
+            );
+          }
+        })}
         <div ref={scrollRef}></div>
-       </ChatMessages>
-          <ChatInputContainer>
-            <ChatInput handleSendMsg={handleSendMsg} />
-          </ChatInputContainer>
+      </ChatMessages>
+  
+      <ChatInputContainer>
+        <ChatInput handleSendMsg={handleSendMsg} />
+      </ChatInputContainer>
     </Container>
-      );
-    }
+  );
+  
+}
 
 const SearchHighlight = ({ text, query, highlightStyle }) => {
     if (!query) return text;
@@ -227,21 +315,26 @@ const SearchHighlight = ({ text, query, highlightStyle }) => {
 function formatTimestamp(timestamp) {
     // Check if the timestamp is valid
     if (!(timestamp instanceof Date && !isNaN(timestamp))) {
-      return "Invalid Date";
+      return "Invalid Date: [" + timestamp + "]";
     }
   
     const options = { hour: 'numeric', minute: 'numeric', hour12: true };
     return timestamp.toLocaleString(undefined, options);
   }
   
-
-function parseISOString(s) {
+  function parseISOString(s) {
     if (!s) {
-      return new Date(); 
+      return new Date();
     }
-    return new Date(s); 
+    // Parse the ISO string using Date.parse
+    const timestamp = Date.parse(s);
+    // Check if the parsing was successful and return the Date object
+    if (!isNaN(timestamp)) {
+      return new Date(timestamp);
+    }
+    // If parsing failed, return the current date
+    return new Date();
   }
-  
 const Occurrences = styled.div`
     background-color: #f1c40f;
     color: #333; 
@@ -294,6 +387,14 @@ const ChatMessages = styled.div`
         }
       }
     `;
+
+const DateSeparator = styled.div`
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: white;
+  `;
+
     
 const Message = styled(({ fromSelf, ...rest }) => <div {...rest} />)`
     display: flex;

@@ -31,6 +31,7 @@ export async function getMessages(req, res, next) {
           message: msg.message.text,
           sender: msg.sender,
           receiver: msg.receiver,
+          createdAt: msg.createdAt,
         };
       });
       res.json(projectedMessages);
@@ -58,9 +59,14 @@ export async function addMessage(req, res, next) {
         sender: from,
         receiver: to,
       });
+
+      if (data) {
+        // After creating the message, you can access the createdAt field
+        const createdAt = data.createdAt;
   
-      if (data) return res.json({ msg: "Message added successfully." });
-      else return res.json({ msg: "Failed to add message to the database" });
+      return res.json({ msg: "Message added successfully." });
+      } else { return res.json({ msg: "Failed to add message to the database" });
+    }
     } catch (ex) {
       next(ex);
     }

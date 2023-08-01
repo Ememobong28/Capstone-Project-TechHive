@@ -27,9 +27,14 @@ export default function Chat() {
       socket.current = io(host);
       socket.current.emit("add-user", currentUser._id);
     }
+    return () => {
+      if (socket.current) {
+        socket.current.disconnect();
+      }
+    };
   }, [currentUser]);
 
-  console.log(currentUser._id,currentUser )
+
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -38,7 +43,7 @@ export default function Chat() {
           try {
             const response = await axios.get(`${allUsersRoute}`);
             const data = response.data;
-            console.log("Contacts API Response:", data); // Log the API response
+          
             setContacts(data);
           } catch (error) {
             console.error("Error fetching contacts:", error);
@@ -52,7 +57,7 @@ export default function Chat() {
     fetchContacts();
   }, [currentUser, navigate]);
   
-  console.log(allUsersRoute)
+ 
   
   const handleChatChange = (chat) => {
     setCurrentChat(chat);
@@ -62,7 +67,7 @@ export default function Chat() {
     <Container>
       <div className="container">
         <Contacts contacts={contacts} changeChat={handleChatChange} />
-        {currentChat && <ChatContainer currentChat={currentChat} socket={socket} />}
+        {currentChat && <ChatContainer currentChat={currentChat} socket={socket} currentUser={currentUser} />}
         
       </div>
     </Container>
