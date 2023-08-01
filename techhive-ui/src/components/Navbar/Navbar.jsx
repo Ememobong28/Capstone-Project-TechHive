@@ -6,6 +6,7 @@ import { UserContext } from '../../UserContext';
 import { FaUserCircle } from 'react-icons/fa';
 import Logout from '../Logout/Logout';
 import { FaBookmark } from 'react-icons/fa';
+import { FaComments } from 'react-icons/fa';
 
 const Navbar = () => {
   const { user } = useContext(UserContext);
@@ -27,6 +28,8 @@ const Navbar = () => {
       <div className="auth-container">
       {user ? ( 
           <>
+          <div className='logged'>
+            <button className='chat'><Link to="/chat"><FaComments size={20} color='black' /></Link></button>
             <button onClick={toggleDropdown} className="profile-icon">
               <FaUserCircle />
             </button>
@@ -36,8 +39,10 @@ const Navbar = () => {
                 <Link onClick={toggleDropdown} className="dropdown-item" to="/saved-internships"> <FaBookmark /> Saved Internships</Link>
               </div>
             )}
-            <Logout />
+            <Logout /> 
+            </div>
           </>
+          
         ) : (
           <div className="auth-links">
             <span><Link to="/login">Login</Link></span>
