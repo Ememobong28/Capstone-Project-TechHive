@@ -39,6 +39,9 @@ router.post('/signup', async (req, res) => {
     // Create a new user
     const newUser = await User.create({ username, email, password: hashedPassword, accountType });
 
+    // Set the user in the session
+    req.session.user = newUser;
+
     // If the account type is 'company', store the industry
     if (accountType === 'company') {
       newUser.industry = industry;
@@ -75,6 +78,9 @@ router.post('/login', async (req, res) => {
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid password' });
     }
+
+    // Set the user in the session
+    req.session.user = user;
 
     // Generate a JWT token
     const token = jwt.sign({ userId: user.id }, 'your-secret-key');

@@ -10,13 +10,16 @@ import { dirname } from 'path';
 import { sequelize } from './database.js';
 import { Internship } from './models/index.js';
 import { User } from './models/index.js';
+import { UserLikedInternship } from './models/userLikedInternship.js';
 import { SavedInternship } from './models/savedInternships.js';
 import {router as authRoutes} from './routes/authRoutes.js';
 import { authenticateToken } from './routes/authRoutes.js';
 import sgMail from '@sendgrid/mail';
 import dotenv from 'dotenv';
 import { Server } from 'socket.io';
+import session from 'express-session';
 import messageRoutes from './routes/messages.js'
+import SequelizeStoreInit from 'connect-session-sequelize';
 
 sgMail.setApiKey('//Took API key out to prevent privacy exposure in Github');
 
@@ -26,9 +29,35 @@ const __dirname = dirname(__filename);
 const app = express();
 dotenv.config();
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
 app.use(express.json()); //Middleware for parsing JSON bodies from HTTP requests
 app.use(morgan('combined'));
+
+//Storing sessions in database
+
+const SequelizeStore = SequelizeStoreInit(session.Store);
+const sessionStore = new SequelizeStore({
+  db: sequelize
+});
+
+//Configure session middleware
+app.use(
+  session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    store: sessionStore,
+    cookie: {
+      sameSite: false,
+      secure: false,
+      expires: new Date(Date.now() + (365 * 24 * 60 * 60 * 1000)) // 1 year in milliseconds
+    }
+  })
+);
+sessionStore.sync();
 
 //MongoDb Database Setup
 mongoose.set('debug', true);
@@ -308,7 +337,6 @@ app.delete('/internships/:id/save', async (req, res) => {
   }
 });
 
-
 app.get('/users/:id/saved-internships', async (req, res) => {
   const userId = req.params.id;
 
@@ -323,7 +351,17 @@ app.get('/users/:id/saved-internships', async (req, res) => {
   }
 });
 
+app.post('/api/like-internships/:id', async (req, res) => {
+  const userId = req.body.userId;
+  const internshipId = req.params.id;
 
+  try {
+    const likedInternship = await UserLikedInternship.create({ userId, internshipId });
+    res.json(likedInternship);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 sequelize
   .sync({ alter: true })
