@@ -29,8 +29,8 @@ const Navbar = () => {
       {user ? ( 
           <>
           <div className='logged'>
-            <button className='chat'><Link to="/chat"><FaComments size={20} color='black' /></Link></button>
-            <button onClick={toggleDropdown} className="profile-icon">
+            <button title = "Messages" className='chat'><Link to="/chat"><FaComments size={20} color='black' /></Link></button>
+            <button onClick={toggleDropdown} className="profile-icon" title = "Profile">
               <FaUserCircle />
             </button>
             {dropdownVisible && (

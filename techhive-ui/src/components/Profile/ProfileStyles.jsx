@@ -122,3 +122,45 @@ export const CloseButton = styled.button`
   cursor: pointer;
   color: #000;
   `;
+
+  export const EditButton = styled.button`
+  background-color: #FF6347;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+
+  &:hover {
+    background-color: #FF6347;
+    opacity: 0.8;
+  }
+`;
+
+export const SaveButton = styled.button`
+  background-color: #008000;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+
+  &:hover {
+    background-color: #008000;
+    opacity: 0.8;
+  }
+`;
+
+export const InputField = styled.input`
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #DDDDDD;
+  border-radius: 5px;
+  font-size: 1em;
+`;
+

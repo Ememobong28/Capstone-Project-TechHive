@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { RefreshContext } from '../Internships/Internships.jsx'; 
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +17,7 @@ const NewInternship = () => {
   const [errors, setErrors] = useState([]);
   const setRefreshData = useContext(RefreshContext);
   const navigate = useNavigate();
+
 
   const handleInputChange = (e) => {
     const inputValue = e.target.value.trim();
@@ -51,6 +52,7 @@ const NewInternship = () => {
         setRefreshData(prev => !prev);
         navigate('/internships');
       }
+
     } catch (error) {
       if (error.response) {
         const serverErrors = error.response.data.errors;
@@ -64,6 +66,7 @@ const NewInternship = () => {
       }
     }
   }
+
 
   return (
     <form onSubmit={handleFormSubmit}>

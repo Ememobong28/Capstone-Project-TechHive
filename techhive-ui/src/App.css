@@ -6,6 +6,33 @@ body {
   background-color: #fee3e8;
 }
 
+/* General Tooltip */
+.custom-tooltip {
+  position: fixed;
+  background-color: #333;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  z-index: 9999;
+  pointer-events: none; /* Prevent the tooltip from interfering with underlying elements */
+  opacity: 0.9; /* Reduce the opacity slightly for a semi-transparent effect */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+/* Custom Tooltip Arrow */
+.custom-tooltip::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+
 
 
 
