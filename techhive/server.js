@@ -8,24 +8,19 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { sequelize } from './database.js';
-import { Internship } from './models/index.js';
 import { User } from './models/index.js';
-import { UserLikedInternship } from './models/userLikedInternship.js';
-import { SavedInternship } from './models/savedInternships.js';
+import { Internship, UserLikedInternship, SavedInternship } from './models/index.js';
 import {router as authRoutes} from './routes/authRoutes.js';
 import { authenticateToken } from './routes/authRoutes.js';
 import sgMail from '@sendgrid/mail';
+import recommendationRoutes from './routes/recommendationRoutes.js';
 import dotenv from 'dotenv';
 import { Server } from 'socket.io';
 import session from 'express-session';
 import messageRoutes from './routes/messages.js'
 import SequelizeStoreInit from 'connect-session-sequelize';
 
-<<<<<<< Updated upstream
-sgMail.setApiKey('//Took API key out to prevent privacy exposure in Github');
-=======
-sgMail.setApiKey('Email API Key');
->>>>>>> Stashed changes
+sgMail.setApiKey('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');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -46,6 +41,8 @@ const SequelizeStore = SequelizeStoreInit(session.Store);
 const sessionStore = new SequelizeStore({
   db: sequelize
 });
+
+app.use('/api', recommendationRoutes)
 
 //Configure session middleware
 app.use(
@@ -356,10 +353,22 @@ app.post('/api/like-internships/:id', async (req, res) => {
   const internshipId = req.params.id;
 
   try {
-    const likedInternship = await UserLikedInternship.create({ userId, internshipId });
-    res.json(likedInternship);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    // Check if the user has already liked the internship
+    const existingLike = await UserLikedInternship.findOne({
+      where: { userId, internshipId },
+    });
+
+    if (existingLike) {
+      // User already liked the internship, so delete the like
+      await UserLikedInternship.destroy({ where: { userId, internshipId } });
+      res.json({ liked: false });
+    } else {
+      // User did not like the internship, so create a new like entry
+      await UserLikedInternship.create({ userId, internshipId });
+      res.json({ liked: true });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 

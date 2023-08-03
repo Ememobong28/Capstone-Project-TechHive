@@ -39,8 +39,6 @@ function Internships() {
         const response = await fetch('http://localhost:3000/internships');
         const data = await response.json();
         data.forEach(internship => {
-          internship.isLiked = false;
-          internship.isSaved = false; 
         });
         setInternships(data);
       } catch (error) {
@@ -74,7 +72,7 @@ function Internships() {
     } else if (filterType === 'category') {
       return internship.category.includes(filterValue);
     }
-    return true; // No filter or 'all' filter selected
+    return true; 
   };
 
   const filteredInternships = internships.filter((internship) =>
@@ -82,11 +80,36 @@ function Internships() {
     filterInternships(internship)
   );
 
-  const handleLikeClick = (event, internship) => {
-    event.stopPropagation(); 
-    internship.isLiked = !internship.isLiked;
-    setInternships([...internships]);
+  const handleLikeClick = async (event, internship) => {
+    event.stopPropagation();
+    try {
+      const response = await fetch(`http://localhost:3000/api/like-internships/${internship.id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId: user.id }),
+      });
+  
+      if (response.ok) {
+        // Create a new object with updated isLiked state
+        const updatedInternship = { ...internship, isLiked: !internship.isLiked };
+        // Find the index of the internship in the state array
+        const internshipIndex = internships.findIndex((i) => i.id === internship.id);
+        // Create a new array with the updated internship object
+        const updatedInternships = [...internships];
+        updatedInternships[internshipIndex] = updatedInternship;
+        // Update the state with the new array
+        setInternships(updatedInternships);
+      } else {
+        console.error('Error liking internship.');
+      }
+    } catch (error) {
+      console.error('Error liking internship:', error);
+    }
   };
+  
+  
 
   const handleSaveClick = async (event, internship) => {
     event.stopPropagation();
@@ -100,7 +123,7 @@ function Internships() {
           body: JSON.stringify({ userId: user.id }),
         });
   
-        // Update isSaved state
+          
         const updatedInternships = internships.map(i => 
           i.id === internship.id ? { ...i, isSaved: false } : i
         );
@@ -114,8 +137,6 @@ function Internships() {
           },
           body: JSON.stringify({ userId: user.id }),
         });
-  
-        // Update isSaved state
         const updatedInternships = internships.map(i => 
           i.id === internship.id ? { ...i, isSaved: true } : i
         );
@@ -124,6 +145,25 @@ function Internships() {
       }
     } catch (error) {
       console.error('Error saving internship:', error);
+    }
+  };
+
+  const handleRecommendationClick = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/recommendations/${user.id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        console.log('Recommendation email sent successfully!');
+      } else {
+        console.error('Error sending recommendation email.');
+      }
+    } catch (error) {
+      console.error('Error sending recommendation email:', error);
     }
   };
   
@@ -172,6 +212,9 @@ return (
      <Link to="/new-internship">
       <button className='new-internships'>Post a New Internship</button>
     </Link>
+    <button className="recommend-button" onClick={handleRecommendationClick}>
+            Get Internship Recommendations
+    </button>
    </div>
       <div className="internship-cards">
         {filteredInternships.map((internship) => (
@@ -199,7 +242,7 @@ return (
             </button>
 
             <button className="save-button" onClick={(event) => handleSaveClick(event, internship)}>
-                {internship.isSaved ? <FaBookmark color="blue" /> : <FaRegBookmark />}
+                {internship.isSaved ? <FaBookmark color="black" /> : <FaRegBookmark />}
               </button>
           </div>
         ))}

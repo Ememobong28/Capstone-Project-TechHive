@@ -19,3 +19,6 @@ techhive/package.json
 *.jpeg
 techhive/profile-images/1691046725688.jpeg
 *.jpeg
+*.json
+*.json
+techhive-ui/package.json
