@@ -8,8 +8,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { sequelize } from './database.js';
-import { User } from './models/index.js';
 import { Internship, UserLikedInternship, SavedInternship } from './models/index.js';
+import { User } from './models/index.js';
 import {router as authRoutes} from './routes/authRoutes.js';
 import { authenticateToken } from './routes/authRoutes.js';
 import sgMail from '@sendgrid/mail';
@@ -20,7 +20,8 @@ import session from 'express-session';
 import messageRoutes from './routes/messages.js'
 import SequelizeStoreInit from 'connect-session-sequelize';
 
-sgMail.setApiKey('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');
+
+sgMail.setApiKey('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');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -42,7 +43,7 @@ const sessionStore = new SequelizeStore({
   db: sequelize
 });
 
-app.use('/api', recommendationRoutes)
+app.use('/api', recommendationRoutes);
 
 //Configure session middleware
 app.use(

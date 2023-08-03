@@ -119,6 +119,29 @@
 .like-button.active {
     color: red;
   }
+.like-button:hover{
+  background-color: #fff;
+}
+
+.save-button {
+    align-self: flex-end; 
+    border: none;
+    background: white;
+    cursor: pointer;
+    margin-right: 30px;
+    margin-bottom: 30px;
+    font-size: 20px; 
+    outline: none;
+    color: #333333;
+  }
+
+.save-button.active {
+    color: black;
+}
+
+.save-button:hover{
+  background-color: #fff;
+}
 
 
 .Modal {
