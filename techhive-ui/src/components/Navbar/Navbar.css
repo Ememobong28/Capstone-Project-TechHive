@@ -113,3 +113,45 @@
   gap: 10px;
 }
 
+/* Custom tooltip for chat and profile icons */
+.chat,
+.profile-icon {
+  position: relative;
+}
+
+.chat:hover::after,
+.profile-icon:hover::after {
+  content: attr(title);
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #007bff;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 30px;
+  font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: opacity 0.2s ease-in-out;
+}
+
+/* Adjust tooltip appearance for chat */
+.chat:hover::after {
+  opacity: 1;
+}
+
+/* Adjust tooltip appearance for profile */
+.profile-icon:hover::after {
+  opacity: 1;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

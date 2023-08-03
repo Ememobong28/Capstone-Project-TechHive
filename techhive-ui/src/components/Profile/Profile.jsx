@@ -24,13 +24,12 @@ const Profile = () => {
   const handleProfilePictureUpload =useCallback( async (event) => {
     const file = event.target.files[0];
     const formData = new FormData();
-    formData.append('picture', file);
+    formData.append('profilePicture', file);
 
     try {
-      const response = await axios.post(`http://localhost:3000/profile/picture`, formData, {
+      const response = await axios.post(`http://localhost:3000/users/${user.id}/profilePicture`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${user?.token}`,
         },
       });
       setProfilePicture(URL.createObjectURL(file));
@@ -56,34 +55,34 @@ const Profile = () => {
   }
 };
 
- 
+
 
 return (
   <ProfileContainer>
     <ProfileCard>
       <ProfilePicContainer>
-        <FileInput type="file" accept="image/*" onChange={handleProfilePictureUpload} />
-        <FaCamera style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: 20, color: '#FF6347', opacity: 1 }} />
-        {renderProfilePicture()}
-       </ProfilePicContainer>
+      <FileInput type="file" accept="image/*" onChange={handleProfilePictureUpload} />
+          {!profilePicture && <FaCamera style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: 20, color: '#FF6347', opacity: 1 }} />}
+          {renderProfilePicture()}
+        </ProfilePicContainer>
       {user && (
         <>
-          <ProfileName>{user?.username}</ProfileName>
-          <ProfileEmail>{user?.email}</ProfileEmail>
+          <ProfileName>{user.username}</ProfileName>
+          <ProfileEmail>{user.email}</ProfileEmail>
           <ProfileDetail>
-            <ProfileDetailBold>Account Type: </ProfileDetailBold>{user?.accountType}
+            <ProfileDetailBold>Account Type: </ProfileDetailBold>{user.accountType}
           </ProfileDetail>
-          {user?.accountType === 'company' && 
+          {user.accountType === 'company' && 
             <ProfileDetail>
-              <ProfileDetailBold>Industry: </ProfileDetailBold>{user?.industry}
+              <ProfileDetailBold>Industry: </ProfileDetailBold>{user.industry}
             </ProfileDetail>}
-          {user?.accountType === 'student' && 
+          {user.accountType === 'student' && 
             <>
               <ProfileDetail>
-                <ProfileDetailBold>University: </ProfileDetailBold>{user?.university}
+                <ProfileDetailBold>University: </ProfileDetailBold>{user.university}
               </ProfileDetail>
               <ProfileDetail>
-                <ProfileDetailBold>Major: </ProfileDetailBold>{user?.major}
+                <ProfileDetailBold>Major: </ProfileDetailBold>{user.major}
               </ProfileDetail>
             </>
           }

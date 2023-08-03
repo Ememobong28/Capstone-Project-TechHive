@@ -1,0 +1,104 @@
+/* Footer.css */
+.footer {
+    background: linear-gradient(to bottom, #fee3e8, #f6c1ca);
+    color: black;
+    padding: 30px 0;
+    position: relative; 
+  }
+  
+ 
+  .footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #fff;
+  }
+
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .footer-logo img {
+    height: 40px;
+  }
+  
+  .footer-links a {
+    color: black;
+    text-decoration: none;
+    margin-right: 20px;
+    font-size: 14px;
+    transition: color 0.3s ease;
+  }
+  
+  .footer-links a:hover {
+    color: purple;
+  }
+  
+  .footer-social {
+    display: flex;
+    align-items: center;
+  }
+  
+  .footer-social a {
+    color: black;
+    text-decoration: none;
+    font-size: 20px;
+    margin-right: 15px;
+    transition: color 0.3s ease;
+  }
+  
+  .footer-social a:last-child {
+    margin-right: 0;
+  }
+
+ .footer-social .facebook:hover {
+    color: #007bff;
+  }
+  
+ 
+  .footer-social .twitter:hover {
+    color: #007bff;
+  }
+  
+  
+  .footer-social .instagram:hover {
+    color: #800080;
+  }
+  
+  .footer-contact {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .footer-contact p {
+    font-size: 16px;
+    margin: 5px 0;
+  }
+  
+  .footer-bottom {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .footer-bottom p {
+    font-size: 12px;
+    color: #888;
+  }
+  
+  .footer-bottom p a {
+    color: #888;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .footer-bottom p a:hover {
+    color: #ddd;
+  }
+  

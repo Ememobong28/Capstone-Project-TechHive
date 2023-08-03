@@ -20,6 +20,7 @@ import session from 'express-session';
 import messageRoutes from './routes/messages.js'
 import SequelizeStoreInit from 'connect-session-sequelize';
 
+
 sgMail.setApiKey('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');
 
 const __filename = fileURLToPath(import.meta.url);
@@ -126,6 +127,7 @@ const upload = multer({
 app.use('/auth', authRoutes);
 app.use('/api/messages', messageRoutes)
 app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/profile-images', express.static(path.join(__dirname, 'profile-images')));
 
 
 app.get('/', (req, res) => {
@@ -272,31 +274,26 @@ const profilePictureUpload = multer({
     }
     cb(null, true);
   },
-  limits: { fileSize: 1024 * 1024 * 10 },
+  limits: { fileSize: 1024 * 1024 * 100 },
 });
 
 // Route to upload a profile picture
-app.post(
-  '/profile/picture',
-  authenticateToken,
-  profilePictureUpload.single('picture'),
-  async (req, res) => {
-    try {
-      // Save the profile picture filename to the user's record in the database
-      const user = await User.findByPk(req.user.id);
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-
-      user.profilePicture = req.file.filename;
-      await user.save();
-
-      res.status(200).json({ message: 'Profile picture uploaded successfully' });
-    } catch (err) {
-      res.status(500).json({ message: err.message });
+app.post('/users/:userId/profilePicture', profilePictureUpload.single('profilePicture'), async (req, res) => {
+  try {
+    const user = await User.findByPk(req.params.userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
+
+    user.profilePicture = req.file.filename;
+    await user.save();
+
+    res.status(200).json({ profilePicture: user.profilePicture });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
-);
+});
+
 
 // Route to serve profile pictures
 app.get('/profile/picture/:userId', async (req, res) => {

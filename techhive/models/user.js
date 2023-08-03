@@ -35,7 +35,7 @@ export const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: true
   },
-  picture: {
+  profilePicture: {
     type: DataTypes.STRING,
     allowNull: true
   },
