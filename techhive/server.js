@@ -254,6 +254,43 @@ app.get('/users/:id', async (req, res) => {
   }
 });
 
+// Route to update user profile
+app.put('/users/:id', [
+  body('username').isLength({ min: 1 }).withMessage('Username is required'),
+  body('email').isEmail().withMessage('Email must be a valid email address'),
+  
+], async (req, res) => {
+  const userId = req.params.id;
+  const updatedUserData = req.body;
+
+  try {
+    // Validate request body
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    // Check if the user exists in the database
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Update user data with the provided changes
+    user.username = updatedUserData.username;
+    user.email = updatedUserData.email;
+    user.linkedin = updatedUserData.linkedin
+
+    // Save the updated user data in the database
+    await user.save();
+
+    // Return the updated user data
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 
 // Setup multer for profile picture uploads
 const profilePictureStorage = multer.diskStorage({

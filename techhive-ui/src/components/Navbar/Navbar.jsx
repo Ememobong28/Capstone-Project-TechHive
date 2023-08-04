@@ -7,6 +7,14 @@ import { FaUserCircle } from 'react-icons/fa';
 import Logout from '../Logout/Logout';
 import { FaBookmark } from 'react-icons/fa';
 import { FaComments } from 'react-icons/fa';
+import styled from 'styled-components';
+
+export const ProfilePic = styled.img`
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  margin-right: 10px;
+`;
 
 const Navbar = () => {
   const { user } = useContext(UserContext);
@@ -30,9 +38,13 @@ const Navbar = () => {
           <>
           <div className='logged'>
             <button title = "Messages" className='chat'><Link to="/chat"><FaComments size={20} color='black' /></Link></button>
-            <button onClick={toggleDropdown} className="profile-icon" title = "Profile">
-              <FaUserCircle />
-            </button>
+            <button onClick={toggleDropdown} className="profile-icon" title="Profile">
+                {user.profilePicture ? (
+                  <ProfilePic src={`http://localhost:3000/profile/picture/${user.id}`} alt="Profile" />
+                ) : (
+                  <FaUserCircle />
+                )}
+              </button>
             {dropdownVisible && (
               <div className="dropdown-menu">
                 <Link onClick={toggleDropdown} className="dropdown-item" to="/profile">Profile</Link>

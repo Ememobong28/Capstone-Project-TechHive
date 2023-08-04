@@ -14,7 +14,6 @@ const LogoutButton = styled.button`
     font-family: montserrat;
     font-weight: bold;
     font-size: 14px;
-    margin-top: 16px;
 
     &:hover {
         background-color:#cb91f8;
