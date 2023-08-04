@@ -14,6 +14,7 @@ import SavedInternships from './components/SavedInternships/SavedInternships.jsx
 import Chat from './components/Chat/Chat.jsx';
 import LoadingState from './components/LoadingState/LoadingState.jsx';
 import Footer from './components/Footer/Footer.jsx';
+import ConferenceIntro from './components/ConferenceIntro/ConferenceIntro.jsx';
 
 function App() {
   const [tooltipText, setTooltipText] = useState('');
@@ -56,6 +57,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/saved-internships" element={<SavedInternships />} />
             <Route path="/chat" element={<Chat />} />
+            <Route path="/conferences" element = {<ConferenceIntro />} />
           </Routes>
           {tooltipText && (
         <div className="custom-tooltip" style={{ top: tooltipPosition.y, left: tooltipPosition.x }}>

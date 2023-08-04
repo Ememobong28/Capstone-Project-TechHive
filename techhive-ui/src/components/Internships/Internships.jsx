@@ -20,6 +20,7 @@ function Internships() {
   const [modalIsOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const [refreshData, setRefreshData] = useState(false); 
+  const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
     if (!user) {
@@ -30,6 +31,13 @@ function Internships() {
   const closeModal = () => {
     setIsOpen(false);
     navigate('/');
+  };
+
+  const showSaveNotification = () => {
+    setShowNotification(true);
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 3000); 
   };
 
 
@@ -128,7 +136,6 @@ function Internships() {
           i.id === internship.id ? { ...i, isSaved: false } : i
         );
         setInternships(updatedInternships);
-  
       } else {
         await fetch(`http://localhost:3000/internships/${internship.id}/save`, {
           method: 'POST',
@@ -137,16 +144,38 @@ function Internships() {
           },
           body: JSON.stringify({ userId: user.id }),
         });
-        const updatedInternships = internships.map(i => 
+
+        // After saving the internship, update the localStorage
+        const savedInternships = JSON.parse(localStorage.getItem('savedInternships')) || [];
+        savedInternships.push(internship.id);
+        localStorage.setItem('savedInternships', JSON.stringify(savedInternships));
+
+        // Show the notification
+        showSaveNotification();
+
+        // Update the isSaved property in the state immediately
+        const updatedInternships = internships.map((i) =>
           i.id === internship.id ? { ...i, isSaved: true } : i
         );
         setInternships(updatedInternships);
-  
       }
     } catch (error) {
       console.error('Error saving internship:', error);
     }
   };
+
+  useEffect(() => {
+    // Load saved internships from localStorage
+    const savedInternships = JSON.parse(localStorage.getItem('savedInternships')) || [];
+
+    // Update the isSaved property for each internship
+    const updatedInternships = internships.map((internship) => ({
+      ...internship,
+      isSaved: savedInternships.includes(internship.id),
+    }));
+
+    setInternships(updatedInternships);
+  }, []);
 
   const handleRecommendationClick = async () => {
     try {
@@ -247,6 +276,9 @@ return (
           </div>
         ))}
       </div>
+      <div className="notification" style={{ display: showNotification ? 'block' : 'none' }}>
+          Internship has been saved!
+        </div>
     </div>
   </RefreshContext.Provider>
   );

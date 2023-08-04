@@ -20,7 +20,8 @@ import session from 'express-session';
 import messageRoutes from './routes/messages.js'
 import SequelizeStoreInit from 'connect-session-sequelize';
 
-sgMail.setApiKey('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');
+
+sgMail.setApiKey('//API KEY');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -248,6 +249,43 @@ app.get('/users/:id', async (req, res) => {
     } else {
       res.status(404).json({ message: 'User not found' });
     }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Route to update user profile
+app.put('/users/:id', [
+  body('username').isLength({ min: 1 }).withMessage('Username is required'),
+  body('email').isEmail().withMessage('Email must be a valid email address'),
+  
+], async (req, res) => {
+  const userId = req.params.id;
+  const updatedUserData = req.body;
+
+  try {
+    // Validate request body
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    // Check if the user exists in the database
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Update user data with the provided changes
+    user.username = updatedUserData.username;
+    user.email = updatedUserData.email;
+    user.linkedin = updatedUserData.linkedin
+
+    // Save the updated user data in the database
+    await user.save();
+
+    // Return the updated user data
+    res.json(user);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

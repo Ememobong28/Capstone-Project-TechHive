@@ -116,10 +116,32 @@
     color: #333333;
   }
 
-.like-button.active {
+  .like-button.active {
     color: red;
   }
+.like-button:hover{
+  background-color: #fff;
+}
 
+.save-button {
+    align-self: flex-end; 
+    border: none;
+    background: white;
+    cursor: pointer;
+    margin-right: 30px;
+    margin-bottom: 30px;
+    font-size: 20px; 
+    outline: none;
+    color: #333333;
+  }
+
+.save-button.active {
+    color: black;
+}
+
+.save-button:hover{
+  background-color: #fff;
+}
 
 .Modal {
     position: absolute;
@@ -185,5 +207,16 @@
   
 .modal-button-signup:hover {
     background-color: #37a3d3;
+  }
+  
+  .notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    display: none;
   }
   

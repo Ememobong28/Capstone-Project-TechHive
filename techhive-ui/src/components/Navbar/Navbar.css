@@ -28,6 +28,11 @@
   transition: color 0.3s ease;
 }
 
+.logged {
+  display: flex;
+  align-items: center;
+}
+
 .nav-links a:hover {
   color: #ff6f00;
 }
@@ -113,7 +118,6 @@
   gap: 10px;
 }
 
-/* Custom tooltip for chat and profile icons */
 .chat,
 .profile-icon {
   position: relative;
@@ -137,12 +141,10 @@
   transition: opacity 0.2s ease-in-out;
 }
 
-/* Adjust tooltip appearance for chat */
 .chat:hover::after {
   opacity: 1;
 }
 
-/* Adjust tooltip appearance for profile */
 .profile-icon:hover::after {
   opacity: 1;
 }

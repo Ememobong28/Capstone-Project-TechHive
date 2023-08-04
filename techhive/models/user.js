@@ -39,6 +39,11 @@ export const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: true
   },
+  linkedin: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    default: ''
+  }
 },{
   tableName: 'users'
 });
