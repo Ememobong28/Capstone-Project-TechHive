@@ -21,7 +21,7 @@ import messageRoutes from './routes/messages.js'
 import SequelizeStoreInit from 'connect-session-sequelize';
 
 
-sgMail.setApiKey('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');
+sgMail.setApiKey('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');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -105,6 +105,7 @@ io.on("connection", (socket) => {
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'images/');
+
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));

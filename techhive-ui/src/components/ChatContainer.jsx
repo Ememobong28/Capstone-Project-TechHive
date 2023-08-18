@@ -1,18 +1,19 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef, useContext, createContext } from "react";
 import styled from "styled-components";
 import ChatInput from "./ChatInput.jsx";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { sendMessageRoute, receiveMessageRoute} from "../utils/APIRoutes";
 import { UserContext } from '../UserContext.jsx';
+import { FaUserCircle } from 'react-icons/fa';
+
 
 export default function ChatContainer({ currentChat, socket }) {
     const { user } = useContext(UserContext);
     const [messages, setMessages] = useState([]);
     const scrollRef = useRef();
     const [receivedMessages, setReceivedMessages] = useState([]);
-    const [searchQuery, setSearchQuery] = useState("");
-  
+    const [searchQuery, setSearchQuery] = useState(""); 
 
 useEffect(() => {
   const fetchMessages = async () => {
@@ -158,13 +159,14 @@ const handleSendMsg = async (msg) => {
       newMessages.sort((a, b) => a.timestamp - b.timestamp);
       return newMessages;
     });
+
   } catch (error) {
     console.error("Error sending message:", error);
   }
 };
 
-
-  useEffect(() => {
+// Listen for new messages via socket
+useEffect(() => {
   if (socket.current) {
     socket.current.on("msg-receiver", (msg) => {
       const receivedMessage = {
@@ -173,15 +175,19 @@ const handleSendMsg = async (msg) => {
         timestamp: parseISOString(msg.timestamp),
         originalTimestamp: parseISOString(msg.timestamp),
       };
-      
-      setMessages((prevMessages) => {
-        let newMessages = [...prevMessages, receivedMessage];
-        newMessages.sort((a, b) => a.timestamp - b.timestamp);
-        return newMessages;
-      });
+
+      setMessages((prevMessages) => [...prevMessages, receivedMessage].sort((a, b) => a.timestamp - b.timestamp));
     });
   }
+
+  // Clean up the listener when the component is unmounted
+  return () => {
+    if (socket.current) {
+      socket.current.off("msg-receiver");
+    }
+  };
 }, [socket]);
+
 
   
     // Helper function to check if a message contains the search query
@@ -229,7 +235,11 @@ const handleSendMsg = async (msg) => {
     <Container>
       <ChatHeader>
         <UserDetails>
-          <Avatar src="//this" alt="" />
+        {currentChat.profilePicture ? (
+            <Avatar src={`http://localhost:3000/profile/picture/${currentChat.id}`} alt="Profile" />
+          ) : (
+            <FaUserCircle size={40} color="#C0C0C0" />
+          )}
           <h3>{currentChat.username}</h3>
         </UserDetails>
         <SearchContainer>
@@ -335,13 +345,13 @@ function formatTimestamp(timestamp) {
     // If parsing failed, return the current date
     return new Date();
   }
-const Occurrences = styled.div`
-    background-color: #f1c40f;
-    color: #333; 
-    font-size: 0.8rem;
-    padding: 0.2rem 0.5rem;
-    border-radius: 10px;
-  `;
+  const Occurrences = styled.div`
+  background-color: #f1c40f;
+  color: #333; 
+  font-size: 0.8rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 10px;
+`;
 
 const SearchContainer = styled.div`
   display: flex;
@@ -350,88 +360,107 @@ const SearchContainer = styled.div`
 `;
 
 const Container = styled.div`
-    display: grid;
-    grid-template-rows:  auto 1fr auto,
-    gap: 0.1rem;
-    overflow: hidden;
-    background-color: #f5f5f;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-      @media screen and (min-width: 720px) and (max-width: 1080px) {
-        grid-template-rows: 15% 70% 15%;
-      }
-    `;
-    
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 0.1rem;
+  overflow: hidden;
+  background-color: #f5f5f5;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+
+  @media screen and (min-width: 720px) and (max-width: 1080px) {
+    grid-template-rows: 15% 70% 15%;
+  }
+`;
+
 const ChatHeader = styled.div`
-    padding: 1rem;
-    background-color: #333;
-    color: #fff;
-    height: 40%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  `;
-  
-    
+  padding: 1rem;
+  background-color: #333;
+  color: #fff;
+  height: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const AvatarContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Avatar = styled.img`
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+`;
+
+const Username = styled.h3`
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0;
+  color: #fff;
+`;
+
 const ChatMessages = styled.div`
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      overflow: auto;
-      &::-webkit-scrollbar {
-        width: 0.2rem;
-        &-thumb {
-          background-color: #ffffff39;
-          width: 0.1rem;
-          border-radius: 1rem;
-        }
-      }
-    `;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 0.2rem;
+    &-thumb {
+      background-color: #ffffff39;
+      width: 0.1rem;
+      border-radius: 1rem;
+    }
+  }
+`;
 
 const DateSeparator = styled.div`
-    text-align: center;
-    font-size: 0.8rem;
-    font-weight: bold;
-    color: white;
-  `;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: blackz;
+`;
 
-    
 const Message = styled(({ fromSelf, ...rest }) => <div {...rest} />)`
-    display: flex;
-    flex-direction: column;
-    align-items: ${({ fromSelf }) => (fromSelf ? "flex-end" : "flex-start")};
-    .content {
-      max-width: 70%;
-      overflow-wrap: break-word;
-      padding: 1rem;
-      font-size: 14px;
-      border-radius: 1rem;
-      color:${({ fromSelf }) => (fromSelf ? "#FFFFFF" : "#333")};
-      background-color: ${({ fromSelf }) => (fromSelf ? "#4f04ff21" : "#9900ff20")};
-      margin-bottom: 0.5rem;
-    }
-    .sender {
-        display: ${({ fromSelf }) => (fromSelf ? "block" : "none")};
-        align-self: flex-end;
-        margin: 0.5rem 0;
-        font-size: 14px;
-        color: ${({ fromSelf }) => (fromSelf ? "#a1a1a1" : "#FFFFFF")};
-      }
-      .receiver {
-        display: ${({ fromSelf }) => (fromSelf ? "none" : "block")};
-        align-self: flex-start;
-        margin: 0.5rem 0;
-        font-size: 14px;
-        color: ${({ fromSelf }) => (fromSelf ? "#FFFFFF" : "#a1a1a1")};
-      }
-      .timestamp {
-        font-size: 0.9rem;
-        color: #a1a1a1;
-        margin-top: 0.3rem;
-        align-self: ${({ fromSelf }) => (fromSelf ? "flex-end" : "flex-start")};
-      }
-  `;
-    
+  display: flex;
+  flex-direction: column;
+  align-items: ${({ fromSelf }) => (fromSelf ? "flex-end" : "flex-start")};
+  .content {
+    max-width: 70%;
+    overflow-wrap: break-word;
+    padding: 1rem;
+    font-size: 14px;
+    border-radius: 1rem;
+    color: ${({ fromSelf }) => (fromSelf ? "#FFFFFF" : "#333")};
+    background-color: ${({ fromSelf }) => (fromSelf ? "#4f04ff21" : "#9900ff20")};
+    margin-bottom: 0.5rem;
+  }
+  .sender {
+    display: ${({ fromSelf }) => (fromSelf ? "block" : "none")};
+    align-self: flex-end;
+    margin: 0.5rem 0;
+    font-size: 14px;
+    color: ${({ fromSelf }) => (fromSelf ? "#a1a1a1" : "#FFFFFF")};
+  }
+  .receiver {
+    display: ${({ fromSelf }) => (fromSelf ? "none" : "block")};
+    align-self: flex-start;
+    margin: 0.5rem 0;
+    font-size: 14px;
+    color: ${({ fromSelf }) => (fromSelf ? "#FFFFFF" : "#a1a1a1")};
+  }
+  .timestamp {
+    font-size: 0.9rem;
+    color: #a1a1a1;
+    margin-top: 0.3rem;
+    align-self: ${({ fromSelf }) => (fromSelf ? "flex-end" : "flex-start")};
+  }
+`;
+
 const ChatInputContainer = styled.div`
   display: flex;
   align-items: center;
@@ -443,13 +472,6 @@ const UserDetails = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
-`;
-
-const Avatar = styled.img`
-  height: 2rem;
-  width: 2rem;
-  border-radius: 50%;
-  object-fit: cover;
 `;
 
 const SearchInput = styled.input`
@@ -478,4 +500,3 @@ const SearchButton = styled.button`
   gap: 0.2rem;
   outline: none;
 `;
-    

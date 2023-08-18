@@ -7,7 +7,7 @@ import { Op } from 'sequelize';
 const router = express.Router();
 
 
-sgMail.setApiKey('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');
+sgMail.setApiKey('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');
 
 
 router.get('/recommendations/:userId', async (req, res) => {

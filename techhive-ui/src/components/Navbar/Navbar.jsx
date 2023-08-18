@@ -32,6 +32,7 @@ const Navbar = () => {
         <li><Link to="/internships">Internships</Link></li>
         <li><Link to="/conferences">Conferences</Link></li>
         <li><Link to="/programs">Programs</Link></li>
+        <li><Link to="/colorstack-community">Colorstack Community</Link></li>
       </ul>
       <div className="auth-container">
       {user ? ( 

@@ -40,22 +40,31 @@ function Internships() {
     }, 3000); 
   };
 
-
+  
+  const fetchInternships = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/internships');
+      const data = await response.json();
+  
+      const savedInternships = JSON.parse(localStorage.getItem('savedInternships')) || [];
+      // Initialize isLiked property for each internship based on liked internships from local storage
+      const likedInternships = JSON.parse(localStorage.getItem('likedInternships')) || [];
+      const updatedInternships = data.map((internship) => ({
+        ...internship,
+        isSaved: savedInternships.includes(internship.id),
+        isLiked: likedInternships.includes(internship.id),
+      }));
+  
+      setInternships(updatedInternships);
+    } catch (error) {
+      console.error('Error fetching internships:', error);
+    }
+  };
+  
   useEffect(() => {
-    const fetchInternships = async () => {
-      try {
-        const response = await fetch('http://localhost:3000/internships');
-        const data = await response.json();
-        data.forEach(internship => {
-        });
-        setInternships(data);
-      } catch (error) {
-        console.error('Error fetching internships:', error);
-      }
-    };
-
     fetchInternships();
   }, [refreshData]);
+  
 
   const handleInternshipClick = (link) => {
     window.open(link, '_blank');
@@ -98,6 +107,7 @@ function Internships() {
         },
         body: JSON.stringify({ userId: user.id }),
       });
+
   
       if (response.ok) {
         // Create a new object with updated isLiked state
@@ -109,6 +119,12 @@ function Internships() {
         updatedInternships[internshipIndex] = updatedInternship;
         // Update the state with the new array
         setInternships(updatedInternships);
+  
+        // Update liked internships in local storage
+        const likedInternshipIds = updatedInternships
+          .filter((i) => i.isLiked)
+          .map((i) => i.id);
+        localStorage.setItem('likedInternships', JSON.stringify(likedInternshipIds));
       } else {
         console.error('Error liking internship.');
       }
@@ -119,23 +135,28 @@ function Internships() {
   
   
 
+
+
   const handleSaveClick = async (event, internship) => {
     event.stopPropagation();
     try {
       if (internship.isSaved) {
-        await fetch(`http://localhost:3000/internships/${internship.id}/save`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ userId: user.id }),
-        });
+        // Show an alert asking the user to unsave the internship
+        const confirmUnsave = window.confirm("This internship is already saved. Do you want to unsave it?");
+        if (confirmUnsave) {
+          await fetch(`http://localhost:3000/internships/${internship.id}/save`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId: user.id }),
+          });
   
-          
-        const updatedInternships = internships.map(i => 
-          i.id === internship.id ? { ...i, isSaved: false } : i
-        );
-        setInternships(updatedInternships);
+          const updatedInternships = internships.map(i =>
+            i.id === internship.id ? { ...i, isSaved: false } : i
+          );
+          setInternships(updatedInternships);
+        }
       } else {
         await fetch(`http://localhost:3000/internships/${internship.id}/save`, {
           method: 'POST',
@@ -144,15 +165,15 @@ function Internships() {
           },
           body: JSON.stringify({ userId: user.id }),
         });
-
+  
         // After saving the internship, update the localStorage
         const savedInternships = JSON.parse(localStorage.getItem('savedInternships')) || [];
         savedInternships.push(internship.id);
         localStorage.setItem('savedInternships', JSON.stringify(savedInternships));
-
+  
         // Show the notification
         showSaveNotification();
-
+  
         // Update the isSaved property in the state immediately
         const updatedInternships = internships.map((i) =>
           i.id === internship.id ? { ...i, isSaved: true } : i
@@ -163,6 +184,8 @@ function Internships() {
       console.error('Error saving internship:', error);
     }
   };
+  
+  
 
   useEffect(() => {
     // Load saved internships from localStorage

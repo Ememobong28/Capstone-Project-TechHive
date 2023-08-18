@@ -7,7 +7,9 @@ import { UserContext } from "../../UserContext.jsx";
 import { allUsersRoute, host } from "../../utils/APIRoutes.jsx";
 import ChatContainer from "../ChatContainer.jsx";
 import Contacts from "../Contacts/Contacts.jsx";
+import { createContext } from 'react';
 
+export const RefreshContext = createContext();
 
 export default function Chat() {
   const navigate = useNavigate();
@@ -15,7 +17,8 @@ export default function Chat() {
   const { user: currentUser } = useContext(UserContext);
   const [contacts, setContacts] = useState([]);
   const [currentChat, setCurrentChat] = useState(undefined);
-
+  const [refreshData, setRefreshData] = useState(false);
+  
   useEffect(() => {
     if (!currentUser) {
       navigate("/login");
@@ -39,7 +42,6 @@ export default function Chat() {
   useEffect(() => {
     const fetchContacts = async () => {
       if (currentUser) {
-        // if (currentUser.picture) {
           try {
             const response = await axios.get(`${allUsersRoute}`);
             const data = response.data;
@@ -48,9 +50,6 @@ export default function Chat() {
           } catch (error) {
             console.error("Error fetching contacts:", error);
           }
-        // } else {
-        //   // navigate("/setAvatar");
-        // }
       }
     };
   
@@ -64,15 +63,17 @@ export default function Chat() {
   };
 
   return (
-    <Container>
-      <div className="container">
-        <Contacts contacts={contacts} changeChat={handleChatChange} />
-        {currentChat && <ChatContainer currentChat={currentChat} socket={socket} currentUser={currentUser} />}
-        
-      </div>
-    </Container>
+    <RefreshContext.Provider value={setRefreshData}>
+      <Container>
+        <div className="container">
+          <Contacts contacts={contacts} changeChat={handleChatChange} />
+          {currentChat && <ChatContainer currentChat={currentChat} socket={socket} currentUser={currentUser} />}
+        </div>
+      </Container>
+    </RefreshContext.Provider>
   );
 }
+
 
 const Container = styled.div`
   height: 100vh;

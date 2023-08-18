@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
+import { Helmet } from 'react-helmet';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar.jsx';
 import WelcomeSection from './components/WelcomeSection/WelcomeSection.jsx';
@@ -15,6 +16,9 @@ import Chat from './components/Chat/Chat.jsx';
 import LoadingState from './components/LoadingState/LoadingState.jsx';
 import Footer from './components/Footer/Footer.jsx';
 import ConferenceIntro from './components/ConferenceIntro/ConferenceIntro.jsx';
+import ColorstackCommunity from './components/ColorstackCommunity/ColorstackCommunity.jsx';
+
+
 
 function App() {
   const [tooltipText, setTooltipText] = useState('');
@@ -42,6 +46,9 @@ function App() {
   return (
     <UserProvider>
       <Router>
+      <Helmet>
+          <title>TechHive</title> {/* Set the title */}
+        </Helmet>
         {/* Show the loading state if isLoading is true */}
         {isLoading ? (
           <LoadingState />
@@ -58,6 +65,7 @@ function App() {
             <Route path="/saved-internships" element={<SavedInternships />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/conferences" element = {<ConferenceIntro />} />
+            <Route path="/colorstack-community" element={<ColorstackCommunity />} />
           </Routes>
           {tooltipText && (
         <div className="custom-tooltip" style={{ top: tooltipPosition.y, left: tooltipPosition.x }}>
