@@ -8,6 +8,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import './Login.css';
 import LockIcon from '@mui/icons-material/Lock';
 import MailIcon from '@mui/icons-material/Mail';
+import LoadingState from '../LoadingState/LoadingState';
 
 const styles = {
   formContainer: {
@@ -48,32 +49,40 @@ function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
   
   const { setUser} = useContext(UserContext);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:3000/auth/login', { email, password });
-      if (response.data && response.data.user && response.data.token) {
-        localStorage.setItem('user', JSON.stringify(response.data.user));
-        console.log(response.data.user)
-        setUser(response.data.user); // Set the user in the user context
-        navigate('/');
-      } else {
-        setError('Invalid server response');
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+  
+      // Set isLoading to true to show loading state during login process
+      setIsLoading(true);
+  
+      try {
+        const response = await axios.post('http://localhost:3000/auth/login', { email, password });
+        if (response.data && response.data.user && response.data.token) {
+          localStorage.setItem('user', JSON.stringify(response.data.user));
+          setUser(response.data.user); // Set the user in the user context
+          navigate('/');
+        } else {
+          setError('Invalid server response');
+        }
+      } catch (err) {
+        console.error(err);
+        if (err.response && err.response.data && err.response.data.message === 'User not found') {
+          setError('No account found. Please create an account.');
+          setTimeout(() => navigate('/signup'), 3000);
+        }
+      } finally {
+        // Reset isLoading after the login process is complete
+        setIsLoading(false);
       }
-    } catch (err) {
-      console.error(err);
-      if (err.response && err.response.data && err.response.data.message === 'User not found') {
-        setError('No account found. Please create an account.');
-        setTimeout(() => navigate('/signup'), 3000);
-      }
-    }
-  };
+    };
 
   return (
     <div className="login">
@@ -134,12 +143,19 @@ function Login() {
             />
             {error && <div className="alert">{error}</div>}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <Button type="submit" variant="contained" sx={styles.button}>
-                Login
-              </Button>
-              <Typography variant="body2" component="p">
-                Don't have an account? <Link to="/signup">Sign up</Link>
-              </Typography>
+              {/* Show loading state if isLoading is true */}
+              {isLoading ? (
+                <LoadingState />
+              ) : (
+                <>
+                  <Button type="submit" variant="contained" sx={styles.button}>
+                    Login
+                  </Button>
+                  <Typography variant="body2" component="p">
+                    Don't have an account? <Link to="/signup">Sign up</Link>
+                  </Typography>
+                </>
+              )}
             </div>
           </form>
         </Box>
